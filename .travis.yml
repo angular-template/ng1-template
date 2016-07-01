@@ -9,7 +9,7 @@ script:
   - gulp build-dist
 
 after_success:
-  - ls -R
+  - cp -avr .build/.dist deployment
   - firebase deploy --token ${FIREBASE_TOKEN}
 
 notifications:
