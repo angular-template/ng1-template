@@ -23,6 +23,5 @@ client/modules/**/*.js.map
 client/modules/**/*.css
 
 # Typescript definition files
-typings/app.d.ts
-typings/**/*.js
-typings/**/*.js.map
+typings/
+!typings/app.d.ts.template
