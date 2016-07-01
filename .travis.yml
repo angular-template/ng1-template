@@ -10,6 +10,8 @@ script:
 
 after_success:
   - cp -avr .build/.dist deployment
+  - cat deployment/index.html
+  - cat deployment/rev-manifest.json
   - firebase deploy --token ${FIREBASE_TOKEN}
 
 notifications:
