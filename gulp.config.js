@@ -202,7 +202,7 @@ module.exports = function () {
             //See https://www.npmjs.com/package/wiredep for docs.
             wiredep: {
                 bowerJson: require(bowerConfig),
-                ignorePath: '../',
+                ignorePath: '..',
                 exclude: []
             },
 
