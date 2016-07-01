@@ -8,7 +8,9 @@ before_install:
 script:
   - npm install
   - gulp build-dist
-  - firebase deploy --token "${FIREBASE_TOKEN}"
+
+after_success:
+  - firebase deploy --token ${FIREBASE_TOKEN}
 
 notifications:
   email:
