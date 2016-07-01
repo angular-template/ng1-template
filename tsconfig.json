@@ -1,9 +1,9 @@
 {
     "compilerOptions": {
-        "target": "ES6"
+        "target": "ES5"
     },
     "files": [
-        "typings/lib.d.ts",
+        "typings/index.d.ts",
         "typings/app.d.ts"
     ]
 }

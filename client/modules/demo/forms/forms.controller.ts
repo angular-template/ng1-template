@@ -1,4 +1,4 @@
-/// <reference path="../../../../typings/lib.d.ts" />
+/// <reference path="../../../../typings/index.d.ts" />
 /// <reference path="../../../../typings/app.d.ts" />
 
 namespace demo.forms {

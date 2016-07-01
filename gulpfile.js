@@ -131,9 +131,10 @@ gulp.task('compile_scripts', ['generate-app-def'], () => {
     log('Transpiling Typescript code to JavaScript');
 
     let tasks = config.modules.map(mod => {
+        let tsProject = $.typescript.createProject('tsconfig.json');
         let tsToCompile = mod.tsToCompile || [`${mod.folder}**/*.ts`];
         let compileTask = gulp.src([].concat(config.definitions.all, tsToCompile))
-            .pipe($.typescript(config.options.typescriptBuild));
+            .pipe($.typescript(tsProject));
         return compileTask.js
             .pipe($.ngAnnotate())
             .pipe($.stripLine(`/// <reference path="`))

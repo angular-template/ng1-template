@@ -209,7 +209,6 @@ module.exports = function () {
             //Typescript compiler options during the dev build.
             //See https://www.npmjs.com/package/typescript for docs.
             typescriptBuild: {
-                typescript: require('typescript'),
                 target: 'ES5',
                 declarationFiles: false,
                 noExternalResolve: false
@@ -218,7 +217,6 @@ module.exports = function () {
             //Typescript compiler options during the vet stage.
             //See https://www.npmjs.com/package/typescript for docs.
             typescriptVet: {
-                typescript: require('typescript'),
                 target: 'ES5',
                 declarationFiles: false,
                 noExternalResolve: false
