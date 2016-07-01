@@ -1,6 +1,3 @@
-/// <reference path="../../../typings/index.d.ts" />
-/// <reference path="../../../typings/app.d.ts" />
-
 namespace security {
     export const securityModule: angular.IModule = angular.module('security', [
         /* App modules */

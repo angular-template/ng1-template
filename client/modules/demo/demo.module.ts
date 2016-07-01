@@ -1,6 +1,3 @@
-/// <reference path="../../../typings/index.d.ts" />
-/// <reference path="../../../typings/app.d.ts" />
-
 namespace demo {
     export const demoModule: angular.IModule = angular.module('demo', [
         'common',

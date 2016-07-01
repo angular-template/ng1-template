@@ -134,7 +134,7 @@ gulp.task('compile_scripts', ['generate-app-def'], () => {
         let tsProject = $.typescript.createProject('tsconfig.json');
         let tsToCompile = mod.tsToCompile || [`${mod.folder}**/*.ts`];
         let compileTask = gulp.src([].concat(config.definitions.all, tsToCompile))
-            .pipe($.typescript(tsProject));
+            .pipe($.typescript(config.options.typescriptBuild));
         return compileTask.js
             .pipe($.ngAnnotate())
             .pipe($.stripLine(`/// <reference path="`))

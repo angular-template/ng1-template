@@ -1,6 +1,3 @@
-/// <reference path="../../../../typings/index.d.ts" />
-/// <reference path="../../../../typings/app.d.ts" />
-
 namespace common.config {
     //Default routing behavior
     commonModule.config(

@@ -1,6 +1,3 @@
-/// <reference path="../../../../../typings/index.d.ts" />
-/// <reference path="../../../../../typings/app.d.ts" />
-
 namespace demo.layouts.sample {
     /* @ngInject */
     export class LayoutController extends ngTemplate.core.bases.LayoutController<common.shell.ShellController> {

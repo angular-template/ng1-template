@@ -1,6 +1,3 @@
-/// <reference path="../../../../typings/index.d.ts" />
-/// <reference path="../../../../typings/app.d.ts" />
-
 namespace common.shell {
     export class ShellController extends ngTemplate.core.bases.BaseShellController {
         /* @ngInject */
