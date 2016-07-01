@@ -11,7 +11,7 @@ script:
   - cat client/index.html
   - cat .build/.dist/index.html
   - cat .build/.dist/rev-manifest.json
-  - cat .build/.dist/module*.js
+  - ls .build/.dist/js/module*.js | cat
 
 after_success:
   - cp -avr .build/.dist deployment
