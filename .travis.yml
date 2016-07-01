@@ -1,8 +1,9 @@
+sudo: required
 language: node_js
 node_js:
-  - '6.2.2'
+  - '6'
 
-before_install:
+before_script:
   - npm install -g bower gulp typings firebase-tools
 
 script:
