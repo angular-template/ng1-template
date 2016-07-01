@@ -1,0 +1,28 @@
+# IDE setting files
+.idea/
+.settings/
+.vs/
+.vscode/
+
+# NPM and Bower
+bower_components/
+node_modules/
+
+# Build output
+.build/
+
+# Generated files
+tslint.json
+client/index.html
+
+# JavaScript and map files, except in the assets folder
+client/modules/**/*.js
+client/modules/**/*.js.map
+
+# CSS files, except in the assets folder
+client/modules/**/*.css
+
+# Typescript definition files
+typings/app.d.ts
+typings/**/*.js
+typings/**/*.js.map

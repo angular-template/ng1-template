@@ -1,0 +1,6 @@
+{
+    "strict-ssl": false,
+    "scripts": {
+        "postinstall": "gulp inject_bower_scripts"
+    }
+}

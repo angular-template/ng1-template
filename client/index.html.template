@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en" ng-app="app" ng-controller="shellController as shell" ng-strict-di>
+<head>
+    <base href="/">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title shared-title="shell.title">Angular Template</title>
+
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
+    <!-- build:css css/app.css -->
+    <!-- inject:css -->
+    <!-- endinject -->
+    <!-- endbuild -->
+
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+</head>
+<body>
+    <div ui-view></div>
+
+    <!-- build:js js/lib.js -->
+    <!-- bower:js -->
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:js js/modules.js -->
+    <!-- inject:globals:js -->
+    <!-- endinject -->
+    <!-- inject:js -->
+    <!-- endinject -->
+    <!-- endbuild -->
+
+    <!-- custom-modules -->
+
+    <!-- build:js js/config.js -->
+    <!-- inject:config:js -->
+    <!-- endinject -->
+    <!-- endbuild -->
+</body>
+</html>

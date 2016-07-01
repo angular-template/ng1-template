@@ -1,0 +1,2 @@
+#!/bin/sh
+gulp vet --fail-on-error=1

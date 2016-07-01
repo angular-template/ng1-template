@@ -1,0 +1,4 @@
+{
+    "rejectUnauthorized": false,
+    "noProxy": "https://api.typings.org"
+}
