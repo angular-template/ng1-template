@@ -7,7 +7,7 @@ before_install:
 
 script:
   - npm install
-  - gulp vet
+  - gulp build-dist
 
 notifications:
   email:
