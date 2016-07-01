@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "AngularJS, Typescript and Gulp template for large applications",
   "scripts": {
-    "postinstall": "bower install && typings install"
+    "postinstall": "bower install && typings install && gulp setup"
   },
   "main": "server/server.js",
   "repository": {
