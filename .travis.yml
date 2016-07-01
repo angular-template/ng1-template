@@ -3,7 +3,7 @@ language: node_js
 node_js:
   - '6'
 
-before_script:
+before_install:
   - npm install -g bower gulp typings firebase-tools
 
 script:
