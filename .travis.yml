@@ -7,12 +7,12 @@ before_install:
 
 script:
   - gulp build-dist
+  - cat client/index.html
+  - cat .build/.dist/index.html
+  - cat .build/.dist/rev-manifest.json
 
 after_success:
   - cp -avr .build/.dist deployment
-  - cat client/index.html
-  - cat deployment/index.html
-  - cat deployment/rev-manifest.json
   - firebase deploy --token ${FIREBASE_TOKEN}
 
 notifications:
