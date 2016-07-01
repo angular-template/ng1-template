@@ -3,8 +3,7 @@ node_js:
   - '6.2.2'
 
 before_install:
-  - npm install -g bower
-  - npm install -g gulp
+  - npm install -g bower gulp typings
 
 script:
   - npm install
