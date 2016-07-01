@@ -1,18 +1,21 @@
 {
-  "name": "ng-ts-gulp-template",
+  "name": "ng1-template",
   "version": "1.0.0",
   "description": "AngularJS, Typescript and Gulp template for large applications",
+  "scripts": {
+    "postinstall": "bower install && typings install"
+  },
   "main": "server/server.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/JeevanJames/angular-typescript-gulp-template.git"
+    "url": "https://github.com/angular-template/ng1-template.git"
   },
   "author": "Jeevan James",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/JeevanJames/angular-typescript-gulp-template/issues"
+    "url": "https://github.com/angular-template/ng1-template/issues"
   },
-  "homepage": "https://github.com/JeevanJames/angular-typescript-gulp-template#readme",
+  "homepage": "https://github.com/angular-template/ng1-template#readme",
   "devDependencies": {
     "del": "^2.0.2",
     "gulp": "^3.9.0",
