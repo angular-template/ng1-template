@@ -3,11 +3,12 @@ node_js:
   - '6.2.2'
 
 before_install:
-  - npm install -g bower gulp typings
+  - npm install -g bower gulp typings firebase-tools
 
 script:
   - npm install
   - gulp build-dist
+  - firebase deploy --token "$FIREBASE_TOKEN"
 
 notifications:
   email:

@@ -25,3 +25,6 @@ client/modules/**/*.css
 # Typescript definition files
 typings/
 !typings/app.d.ts.template
+
+# Log/debug files from tools like npm
+./*.log
