@@ -8,10 +8,7 @@ before_install:
 
 script:
   - gulp build-dist
-  - cat client/index.html
-  - cat .build/.dist/index.html
-  - cat .build/.dist/rev-manifest.json
-  - ls .build/.dist/js/module*.js | cat
+  - ls .build -R
 
 after_success:
   - cp -avr .build/.dist deployment
