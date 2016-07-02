@@ -71,18 +71,20 @@ module.exports = function () {
             root: rootFolder,
 
             //All top-level folders
-            client: clientFolder,
             bower: bowerFolder,
+            client: clientFolder,
             nodeModules: nodeModulesFolder,
+            server: serverFolder,
             tools: toolsFolder,
             typings: typingsFolder,
-            server: serverFolder,
             webserver: webserverFolder,
 
             //Application assets folder
             assets: assetsFolder,
+            modules: modulesFolder,
 
             //Build output folders
+            build: buildFolder,
             devBuild: devBuildFolder,
             devBuildScripts: devBuildScriptsFolder,
             devBuildStyles: devBuildStylesFolder,
@@ -119,13 +121,6 @@ module.exports = function () {
                     return files;
                 }, [])
             ),
-        },
-
-        globals: {
-            file: `${devBuildScriptsFolder}globals.js`,
-            appComponentPrefix: 'app',
-            sharedComponentPrefix: 'shared',
-            appPrefix: undefined
         },
 
         //Environment-specific config handling

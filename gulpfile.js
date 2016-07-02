@@ -74,7 +74,7 @@ gulp.task(tsks.dev.build, done => {
     let tasks = [
         tsks.dev.clean, tsks.shell.generate,
         [tsks.inject.vendor, 'compile_scripts', 'compile_styles'],
-        ['create_config', 'create_globals'],
+        'create_config',
         [tsks.inject.local, 'copy_static_to_dev'],
         done
     ];
@@ -153,16 +153,6 @@ gulp.task('compile_styles', () => {
             .pipe(gulp.dest(config.folders.devBuildStyles))
     );
     return merge(tasks);
-});
-
-gulp.task('create_globals', done => {
-    let Writer = require('simple-file-writer');
-    let w = new Writer(`${config.folders.devBuildScripts}globals.js`);
-    w.write(`var appComponentPrefix = '${config.globals.appComponentPrefix || 'app'}';`);
-    w.write(`var sharedComponentPrefix = '${config.globals.sharedComponentPrefix || 'shared'}';`);
-    let appProfile = config.globals.appProfile ? `'${config.globals.appProfile}'` : 'null';
-    w.write(`var appProfile = ${appProfile};`);
-    done();
 });
 
 gulp.task('create_config', () => {

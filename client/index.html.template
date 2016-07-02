@@ -27,8 +27,6 @@
     <!-- endbuild -->
 
     <!-- build:js js/modules.js -->
-    <!-- inject:globals:js -->
-    <!-- endinject -->
     <!-- inject:js -->
     <!-- endinject -->
     <!-- endbuild -->
