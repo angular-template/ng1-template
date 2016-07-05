@@ -169,11 +169,6 @@ gulp.task('create_config', () => {
 gulp.task(tsks.inject.local, () => {
     log('Injecting local script and CSS references.');
 
-    let globalsSrc = gulp.src(config.globals.file);
-    let globalsOptions = {
-        starttag: '<!-- inject:globals:js -->'
-    };
-
     let configSrc = gulp.src(config.config.defaultOutput);
     let configOptions = {
         starttag: '<!-- inject:config:js -->'
@@ -185,7 +180,6 @@ gulp.task(tsks.inject.local, () => {
     let firstJsSrc = gulp.src(config.injections.firstJs);
 
     let injectTask = gulp.src(config.shell)
-        .pipe($.inject(globalsSrc, globalsOptions))
         .pipe($.inject(configSrc, configOptions))
         .pipe($.inject(cssSrc))
         .pipe($.inject(firstJsSrc));
