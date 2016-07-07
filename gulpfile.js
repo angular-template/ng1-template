@@ -130,6 +130,13 @@ gulp.task(tsks.inject.vendor, () => {
 gulp.task('compile_scripts', ['generate-app-def'], () => {
     log('Transpiling Typescript code to JavaScript');
 
+    let appCompileSrc = gulp.src([].concat(config.definitions.all, `${config.folders.modules}app.ts`))
+        .pipe($.typescript(config.options.typescriptBuild));
+    let appCompileTask = appCompileSrc.js
+        .pipe($.ngAnnotate())
+        .pipe($.stripLine(`/// <reference path="`))
+        .pipe(gulp.dest(config.folders.devBuildScripts));
+
     let tasks = config.modules.map(mod => {
         let tsProject = $.typescript.createProject('tsconfig.json');
         let tsToCompile = mod.tsToCompile || [`${mod.folder}**/*.ts`];
@@ -140,7 +147,7 @@ gulp.task('compile_scripts', ['generate-app-def'], () => {
             .pipe($.stripLine(`/// <reference path="`))
             .pipe(gulp.dest(mod.jsOutputFolder));
     });
-    return merge(tasks);
+    return merge([appCompileTask].concat(tasks));
 });
 
 gulp.task('compile_styles', () => {

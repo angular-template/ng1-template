@@ -19,7 +19,7 @@
     <link rel="icon" type="image/png" href="/images/favicon.png">
 </head>
 <body>
-    <div ui-view></div>
+    <app></app>
 
     <!-- build:js js/lib.js -->
     <!-- bower:js -->

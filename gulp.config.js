@@ -118,6 +118,7 @@ module.exports = function () {
                 modules.reduce((files, mod) => {
                     files.unshift(`${devBuildScriptsFolder}${mod.name}/config/*.js`);
                     files.unshift(`${devBuildScriptsFolder}${mod.name}/${mod.name}.module.js`);
+                    files.unshift(`${devBuildScriptsFolder}app.js`);
                     return files;
                 }, [])
             ),
