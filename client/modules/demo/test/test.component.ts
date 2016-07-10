@@ -23,8 +23,8 @@ namespace demo.test {
         templateUrl: 'test/test.html',
         controller: TestController,
         bindings: {
-            theValue: '<'
-        }
+            theValue: '<',
+        },
     }, demoModule);
 
     // demoModule.component('test', {

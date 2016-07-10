@@ -28,5 +28,5 @@ namespace demo.home {
             url: '/home',
             parent: demo.layouts.sample.component,
         },
-    }, demoModule)
+    }, demoModule);
 }
