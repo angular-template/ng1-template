@@ -395,7 +395,7 @@ gulp.task('app_def_copy_template', () =>
 gulp.task('app_def_generate', () => {
     let tsFiles = config.modules.reduce((files, mod) =>
         files.concat(mod.tsToCompile || [`${mod.folder}**/*.ts`])
-    , []);
+    , [`${config.folders.modules}app.ts`]);
     let tsFilesSrc = gulp.src(tsFiles, {read: false});
     return gulp.src(config.definitions.appFile)
         .pipe($.inject(tsFilesSrc, {

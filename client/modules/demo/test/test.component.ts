@@ -2,20 +2,37 @@
 /// <reference path="../../../../typings/app.d.ts" />
 
 namespace demo.test {
-    export class TestController implements angular.IComponentController {
-        public message: string = 'My Message from Class';
+    export interface ITestBindings {
+        theValue: string;
+    }
 
+    export class TestController implements angular.IComponentController, ITestBindings {
         public $onInit(): void {
-            this.message = 'New Message from Class';
+            alert(this.theValue);
+        }
+
+        public theValue: string;
+
+        public message(): string {
+            return 'New Message from Class' + this.theValue;
         }
     }
 
-    demoModule.component('test', {
-        templateUrl: '/client/modules/demo/test/test.html',
-        bindings: {
-            value: '<',
-        },
+    app.registerComponent({
+        name: 'test',
+        templateUrl: 'test/test.html',
         controller: TestController,
-        controllerAs: 'test',
-    });
+        bindings: {
+            theValue: '<'
+        }
+    }, demoModule);
+
+    // demoModule.component('test', {
+    //     templateUrl: '/client/modules/demo/test/test.html',
+    //     controller: TestController,
+    //     controllerAs: 'test',
+    //     bindings: {
+    //         theValue: '<'
+    //     }
+    // })
 }

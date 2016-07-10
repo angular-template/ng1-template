@@ -19,11 +19,63 @@ namespace app {
         'ui.router'
     ]);
 
-    // export class AppComponent implements angular.IComponentController {
-
-    // }
-
     appModule.component('app', {
         template: '<div ui-view></div>'
     });
+
+    export interface IComponentDefinition {
+        name: string;
+        controller: angular.IComponentController;
+        templateUrl: string;
+        bindings?: { [binding: string]: string };
+        route?: IComponentRoute;
+    }
+
+    export interface IComponentRoute {
+        url: string;
+        resolve?: Dictionary;
+        abstract?: boolean;
+        parent?: string | IComponentDefinition;
+    }
+
+    export function registerComponent(
+        definition: IComponentDefinition,
+        module: angular.IModule,
+        templateUrlRoot?: string
+    ) {
+
+        let finalTemplateUrlRoot: string = templateUrlRoot || `/client/modules/${module.name}/`;
+        module.component(_.camelCase(definition.name), {
+            templateUrl: `${finalTemplateUrlRoot}${definition.templateUrl}`,
+            controller: definition.controller,
+            controllerAs: _.camelCase(definition.name),
+            bindings: definition.bindings
+        });
+
+        if (definition.route) {
+            let route: IComponentRoute = definition.route;
+            module.config(['$stateProvider',
+                function ($stateProvider: ng.ui.IStateProvider) {
+                    let state: ng.ui.IState = {
+                        name: definition.name,
+                        template: `<${definition.name}></${definition.name}>`,
+                        url: route.url,
+                        resolve: route.resolve,
+                    };
+                    if (route.abstract !== undefined) {
+                        state.abstract = route.abstract;
+                    }
+                    if (route.parent) {
+                        let parent: string | IComponentDefinition = route.parent;
+                        if (typeof parent === 'string') {
+                            state.parent = parent;
+                        } else {
+                            state.parent = parent.name;
+                        }
+                    }
+                    $stateProvider.state(state);
+                }
+            ]);
+        }
+    }
 }

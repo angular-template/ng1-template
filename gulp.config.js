@@ -28,7 +28,7 @@ module.exports = function () {
     const appDefinitionFileName = 'app.d.ts';
     const appDefinitionFile = typingsFolder + appDefinitionFileName;
     const typescriptDefinitionFiles = [].concat(
-        typingsFolder + 'lib.d.ts',
+        typingsFolder + 'index.d.ts',
         appDefinitionFile
     );
 

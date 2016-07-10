@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" ng-app="app" ng-controller="shellController as shell" ng-strict-di>
+<html lang="en" ng-app="app" ng-strict-di>
 <head>
     <base href="/">
 
