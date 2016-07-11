@@ -3,7 +3,7 @@
 
 namespace common {
     export const commonModule: angular.IModule = angular.module('common', [
-        'ngTemplate.core',
+        'ng1Template.core',
 
         /* Angular modules */
         'ngSanitize',
@@ -14,11 +14,4 @@ namespace common {
         /* Angular-UI modules */
         'ui.router',
     ]);
-
-    export function registerController(
-        controllerConstructor: Function,
-        route: IPageState,
-        ...secondaryRoutes: IPageState[]): angular.IModule {
-        return registerControllers(controllerConstructor, route, secondaryRoutes, commonModule);
-    }
 }

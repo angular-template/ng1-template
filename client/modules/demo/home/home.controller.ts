@@ -14,8 +14,8 @@ namespace demo.home {
         selector: 'home',
         templateUrl: 'home/home.html',
         route: {
-            url: '/',
-            parent: demo.layouts.sample.component
+            path: '/',
+            parent: 'sample-layout'
         }
     }, demoModule)
     export class HomeComponent implements IHomeController {
@@ -23,7 +23,7 @@ namespace demo.home {
 
         public text2: string = 'Text2 Bleh';
 
-        public onDisplay() {
+        public onDisplay(): void {
             alert(this.text1);
         }
     }

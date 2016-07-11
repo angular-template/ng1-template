@@ -12,7 +12,13 @@ namespace common.config {
     commonModule.run(
         /* @ngInject */
         ($rootScope: angular.IRootScopeService, $log: angular.ILogService) => {
-            $rootScope.$on('$stateChangeError', (event: angular.IAngularEvent, toState: angular.ui.IState, toParams: Dictionary, fromState: angular.ui.IState, fromParams: Dictionary) => {
+            $rootScope.$on('$stateChangeError', (
+                event: angular.IAngularEvent,
+                toState: angular.ui.IState,
+                toParams: { [key: string]: string },
+                fromState: angular.ui.IState,
+                fromParams: { [key: string]: string }
+            ) => {
                 $log.error(event, toState, toParams, fromState, fromParams);
             });
         }

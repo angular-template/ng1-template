@@ -11,13 +11,13 @@ namespace demo.test {
         templateUrl: 'test/test.html'
     }, demoModule)
     export class TestController implements angular.IComponentController, ITestBindings {
-        @binding.oneWay()
+        @bind.oneWay()
         public theValue: string;
 
-        @binding.event()
+        @bind.event()
         public display: () => void;
 
-        public displayValue() {
+        public displayValue(): void {
             if (this.display) {
                 this.display();
             }
