@@ -5,7 +5,7 @@ namespace demo.layouts.sample {
     @Layout({
         name: 'sample-layout',
         templateUrl: 'layouts/sample/sample-layout.html',
-        module: demoModule
+        module: demoModule,
     })
     export class SampleLayoutComponent implements ng.IComponentController {
     }
