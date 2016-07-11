@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/angular-template/ng1-template.svg?branch=develop)](https://travis-ci.org/angular-template/ng1-template)
+
 # ng1-template
 Starter template for enterprise Angular applications using Typescript 1.8 and Gulp.
 
