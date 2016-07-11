@@ -208,7 +208,8 @@ module.exports = function () {
                 target: 'ES5',
                 declarationFiles: false,
                 noExternalResolve: false,
-                experimentalDecorators: true
+                experimentalDecorators: true,
+                emitDecoratorMetadata: true
             },
 
             //Typescript compiler options during the vet stage.
@@ -217,7 +218,8 @@ module.exports = function () {
                 target: 'ES5',
                 declarationFiles: false,
                 noExternalResolve: false,
-                experimentalDecorators: true
+                experimentalDecorators: true,
+                emitDecoratorMetadata: true
             }
         },
 

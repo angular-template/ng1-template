@@ -5,6 +5,7 @@
     "angular-sanitize": "registry:dt/angular-sanitize#1.3.0+20160317120654",
     "angular-ui-router": "registry:dt/angular-ui-router#1.1.5+20160521151413",
     "jquery": "registry:dt/jquery#1.10.0+20160704162008",
-    "lodash": "registry:dt/lodash#3.10.0+20160619033623"
+    "lodash": "registry:dt/lodash#3.10.0+20160619033623",
+    "reflect-metadata": "registry:dt/reflect-metadata#0.0.0+20160630155503"
   }
 }

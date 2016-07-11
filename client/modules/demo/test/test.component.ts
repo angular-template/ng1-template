@@ -8,17 +8,20 @@ namespace demo.test {
 
     @Component({
         selector: 'test',
-        templateUrl: 'test/test.html',
-        bindings: {
-            theValue: '<'
-        }
+        templateUrl: 'test/test.html'
     }, demoModule)
     export class TestController implements angular.IComponentController, ITestBindings {
-        public $onInit(): void {
-            alert(this.theValue);
-        }
-
+        @binding.oneWay()
         public theValue: string;
+
+        @binding.event()
+        public display: () => void;
+
+        public displayValue() {
+            if (this.display) {
+                this.display();
+            }
+        }
 
         public message(): string {
             return 'New Message from Class' + this.theValue;

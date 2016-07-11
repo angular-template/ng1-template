@@ -19,12 +19,12 @@ namespace demo.home {
         }
     }, demoModule)
     export class HomeComponent implements IHomeController {
-        public $onInit(): void {
-            this.text1 = 'Text1 Blah';
-            this.text2 = 'Text2 Bleh';
-        }
+        public text1: string = 'Text1 Blah';
 
-        public text1: string;
-        public text2: string;
+        public text2: string = 'Text2 Bleh';
+
+        public onDisplay() {
+            alert(this.text1);
+        }
     }
 }

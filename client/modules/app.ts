@@ -82,15 +82,22 @@ namespace app {
 function Component(details: {
     selector: string,
     templateUrl: string,
-    bindings?: { [binding: string]: string },
     route?: app.IComponentRoute
 }, module: ng.IModule, templateUrlRoot?: string) {
     return function(target: Object) {
+        let bindings: { [binding: string]: string } = target['bindings'] ? {} : undefined;
+        if (bindings) {
+            for (let b in target['bindings']) {
+                if (target['bindings'].hasOwnProperty(b)) {
+                    bindings[b] = target['bindings'][b];
+                }
+            }
+        }
         app.registerComponent({
             name: details.selector,
             controller: target,
             templateUrl: details.templateUrl,
-            bindings: details.bindings,
+            bindings: bindings,
             route: details.route
         }, module, templateUrlRoot);
     }
@@ -112,5 +119,43 @@ function Layout(details: {
                 url: '^'
             }
         }, details.module, details.templateUrlRoot);
+    }
+}
+
+namespace binding {
+    export function oneWay() {
+        return function (target: Object, key: string) {
+            if (!target.constructor['bindings']) {
+                target.constructor['bindings'] = {};
+            }
+            target.constructor['bindings'][key] = '<';
+        }
+    }
+
+    export function twoWay() {
+        return function (target: Object, key: string) {
+            if (!target.constructor['bindings']) {
+                target.constructor['bindings'] = {};
+            }
+            target.constructor['bindings'][key] = '=';
+        }
+    }
+
+    export function string() {
+        return function (target: Object, key: string) {
+            if (!target.constructor['bindings']) {
+                target.constructor['bindings'] = {};
+            }
+            target.constructor['bindings'][key] = '@';
+        }
+    }
+
+    export function event() {
+        return function (target: Object, key: string) {
+            if (!target.constructor['bindings']) {
+                target.constructor['bindings'] = {};
+            }
+            target.constructor['bindings'][key] = '&';
+        }
     }
 }
