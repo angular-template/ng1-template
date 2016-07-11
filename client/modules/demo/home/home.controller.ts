@@ -12,7 +12,6 @@ namespace demo.home {
 
     @Component({
         selector: 'home',
-        templateUrl: 'home/home.html',
         route: {
             path: '/',
             parent: 'sample-layout'

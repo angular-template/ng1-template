@@ -3,8 +3,7 @@
 
 namespace demo.formField {
     @Component({
-        selector: 'form-field',
-        templateUrl: 'form-field/form-field.html'
+        selector: 'form-field'
     }, demoModule)
     export class FormFieldComponent implements ng.IComponentController {
         @bind.oneWay()

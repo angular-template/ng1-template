@@ -4,7 +4,6 @@
 namespace demo.componentBasics {
     @Component({
         selector: 'component-basics',
-        templateUrl: 'component-basics/component-basics.html',
         route: {
             path: '/demo/component-basics',
             parent: 'sample-layout'
