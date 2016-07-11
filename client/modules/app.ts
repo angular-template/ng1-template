@@ -43,7 +43,6 @@ namespace app {
         module: angular.IModule,
         templateUrlRoot?: string
     ) {
-
         let finalTemplateUrlRoot: string = templateUrlRoot || `/client/modules/${module.name}/`;
         module.component(_.camelCase(definition.name), {
             templateUrl: `${finalTemplateUrlRoot}${definition.templateUrl}`,
@@ -77,5 +76,41 @@ namespace app {
                 }
             ]);
         }
+    }
+}
+
+function Component(details: {
+    selector: string,
+    templateUrl: string,
+    bindings?: { [binding: string]: string },
+    route?: app.IComponentRoute
+}, module: ng.IModule, templateUrlRoot?: string) {
+    return function(target: Object) {
+        app.registerComponent({
+            name: details.selector,
+            controller: target,
+            templateUrl: details.templateUrl,
+            bindings: details.bindings,
+            route: details.route
+        }, module, templateUrlRoot);
+    }
+}
+
+function Layout(details: {
+    name: string,
+    templateUrl: string,
+    module: ng.IModule,
+    templateUrlRoot?: string
+}) {
+    return function(target: Function) {
+        app.registerComponent({
+            name: details.name,
+            controller: target,
+            templateUrl: details.templateUrl,
+            route: {
+                abstract: true,
+                url: '^'
+            }
+        }, details.module, details.templateUrlRoot);
     }
 }

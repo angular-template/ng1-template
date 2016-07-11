@@ -10,6 +10,14 @@ namespace demo.home {
         text2: string;
     }
 
+    @Component({
+        selector: 'home',
+        templateUrl: 'home/home.html',
+        route: {
+            url: '/',
+            parent: demo.layouts.sample.component
+        }
+    }, demoModule)
     export class HomeComponent implements IHomeController {
         public $onInit(): void {
             this.text1 = 'Text1 Blah';
@@ -19,14 +27,4 @@ namespace demo.home {
         public text1: string;
         public text2: string;
     }
-
-    app.registerComponent({
-        name: 'home',
-        templateUrl: 'home/home.html',
-        controller: HomeComponent,
-        route: {
-            url: '/home',
-            parent: demo.layouts.sample.component,
-        },
-    }, demoModule);
 }
