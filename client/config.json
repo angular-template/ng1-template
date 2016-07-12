@@ -10,7 +10,7 @@
             "apiBaseUrl": "http://dev-server/api/"
         }
     },
-    
+
     "qa": {
         "config": {
             "apiBaseUrl": "http://qa-server/api/"
