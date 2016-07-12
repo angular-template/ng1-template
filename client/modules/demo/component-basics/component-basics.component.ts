@@ -9,6 +9,6 @@ namespace demo.componentBasics {
         public static route: ng1Template.core.IComponentRoute = {
             path: '/demo/component-basics',
             parent: 'sample-layout'
-        }
+        };
     }
 }

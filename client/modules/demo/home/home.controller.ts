@@ -17,6 +17,6 @@ namespace demo.home {
         public static route: ng1Template.core.IComponentRoute = {
             path: '/',
             parent: 'sample-layout'
-        }
+        };
     }
 }
