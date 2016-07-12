@@ -3,13 +3,12 @@
 
 namespace demo.componentBasics {
     @Component({
-        selector: 'component-basics',
-        route: {
+        selector: 'component-basics'
+    }, demoModule)
+    export class ComponentBasicsComponent implements ng.IComponentController {
+        public static route: ng1Template.core.IComponentRoute = {
             path: '/demo/component-basics',
             parent: 'sample-layout'
         }
-    }, demoModule)
-    export class ComponentBasicsComponent implements ng.IComponentController {
-
     }
 }
