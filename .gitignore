@@ -4,9 +4,10 @@
 .vs/
 .vscode/
 
-# NPM and Bower
+# NPM, Bower and Typings
 bower_components/
 node_modules/
+typings/
 
 # Build output
 .build/
@@ -21,10 +22,6 @@ client/modules/**/*.js.map
 
 # CSS files, except in the assets folder
 client/modules/**/*.css
-
-# Typescript definition files
-typings/
-!typings/app.d.ts.template
 
 # Log/debug files from tools like npm
 ./*.log

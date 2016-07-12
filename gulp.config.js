@@ -164,7 +164,7 @@ module.exports = function () {
 
             //Empty template of the definition file for application files.
             //Contains only the necessary placeholders for the injector.
-            appTemplate: typingsFolder + 'app.d.ts.template',
+            appTemplate: `${toolsFolder}app-typings/app.d.ts.template`,
 
             //List of all definition files (application, bower, etc.)
             all: typescriptDefinitionFiles
