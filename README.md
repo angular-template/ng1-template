@@ -13,6 +13,8 @@ Starter template for large enterprise Angular applications using Typescript. The
 | master | [![Build Status](https://travis-ci.org/angular-template/ng1-template.svg?branch=master)](https://travis-ci.org/angular-template/ng1-template) |
 | develop | [![Build Status](https://travis-ci.org/angular-template/ng1-template.svg?branch=develop)](https://travis-ci.org/angular-template/ng1-template) |
 
+[Live Demo Site](https://ng1-template.firebaseapp.com/)
+
 ### Quick start
 Ensure you have Gulp, Bower and Typings installed globally
 ```shell
