@@ -1,14 +1,34 @@
-[![Build Status](https://travis-ci.org/angular-template/ng1-template.svg?branch=develop)](https://travis-ci.org/angular-template/ng1-template)
+## Angular 1.5 Starter Template
+Starter template for large enterprise Angular applications using Typescript. The template features:
+* New component-based UI from Angular 1.5.
+* Routing using the angular-ui-router framework.
+* Gulp scripts for dev and production builds, code vetting, unit tests and development workflow.
+* Support for multiple environment (dev, qa, prod, etc.) configurations.
+* Modular structure using folder conventions
+* Git pre-commit hooks to vet code before every commit.
 
-# ng1-template
-Starter template for enterprise Angular applications using Typescript 1.8 and Gulp.
+### Continuous builds on Travis CI
+| Branch | Status |
+| ------ | ------ |
+| master | [![Build Status](https://travis-ci.org/angular-template/ng1-template.svg?branch=master)](https://travis-ci.org/angular-template/ng1-template) |
+| develop | [![Build Status](https://travis-ci.org/angular-template/ng1-template.svg?branch=develop)](https://travis-ci.org/angular-template/ng1-template) |
 
-## Global settings (one time per system)
-If you are behind a firewall (typical in corporate environments), run the following commands:
+### Quick start
+Ensure you have Gulp, Bower and Typings installed globally
+```shell
+npm install -g gulp bower typings
+```
 
-git config --global url.https://.insteadOf git:// 
+Clone or fork the repository, then run the following from the root folder to setup local dependencies:
+```shell
+npm install
+```
 
-npm config set strict-ssl false
+Run the application using Gulp
+```shell
+gulp
+```
 
-## Global packages to install
-npm install -g bower gulp typings
+### Further reading
+* [Development Environment](https://github.com/angular-template/docs/wiki/Development-Environment): Details on system prerequisites, setting up your development environment and dealing with common issues.
+* [Angular 1.5 Template Documentation](): Full documentation for the template.
