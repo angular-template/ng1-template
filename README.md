@@ -33,4 +33,4 @@ gulp
 
 ### Further reading
 * [Development Environment](https://github.com/angular-template/docs/wiki/Development-Environment): Details on system prerequisites, setting up your development environment and dealing with common issues.
-* [Angular 1.5 Template Documentation](): Full documentation for the template.
+* [Full Documentation](https://github.com/angular-template/ng1-template/wiki): Project wiki containing the full documentation.
