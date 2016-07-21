@@ -2,7 +2,7 @@
 /// <reference path="../../../../../typings/app.d.ts"/>
 
 namespace demo.layouts.sample {
-    @Injectable()
+    @Injectable('sampleLayoutService')
     export class SampleLayoutService {
         public getMenuItems(): MenuItems {
             return [

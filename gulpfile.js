@@ -182,9 +182,10 @@ function buildModuleCode(modules, index) {
         `        };`,
         `    };`,
         ``,
-        `    export let Injectable: core.InjectorDecoratorFactory = (): core.ClassDecorator => {`,
+        `    export let Injectable: core.ServiceDecoratorFactory = (name: string): core.ClassDecorator => {`,
         `        return (target: Function): void => {`,
         `            core.registerService({`,
+        `                name: name,`,
         `                service: target,`,
         `                module: ${module.name}Module`,
         `            });`,
@@ -625,8 +626,10 @@ gulp.task(tsks.vet._lintTsCopyConfig, () =>
 gulp.task(tsks.vet._lintTsRun, () => {
     log(config.tslint[tslintIndex].description);
     return gulp.src(config.tslint[tslintIndex].files)
-        .pipe($.tslint())
-        .pipe($.tslint.report('stylish', {
+        .pipe($.tslint({
+            formatter: 'verbose'
+        }))
+        .pipe($.tslint.report({
             emitError: failOnVetError,
             bell: true
         }))
