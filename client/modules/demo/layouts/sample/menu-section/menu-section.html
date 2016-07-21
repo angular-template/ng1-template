@@ -1,0 +1,6 @@
+    <div>
+        <span ng-repeat="(index, mi) in menuSection.menuItems track by $index">
+            <span ng-if="index > 0"> | </span>
+            <a ui-sref="{{mi.name}}">{{mi.text}}</a>
+        </span>
+    </div>
