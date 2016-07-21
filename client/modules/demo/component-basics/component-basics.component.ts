@@ -6,11 +6,10 @@ namespace demo.componentBasics {
 
     @Component({
         selector: name
-    }, demoModule)
+    }, {
+        path: '/demo/component-basics',
+        parent: layouts.sample.name
+    })
     export class ComponentBasicsComponent implements ng.IComponentController {
-        public static route: ng1Template.core.IComponentRoute = {
-            path: '/demo/component-basics',
-            parent: 'sample-layout'
-        };
     }
 }

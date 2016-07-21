@@ -5,7 +5,7 @@ namespace demo.layouts.sample.footerSection {
     @Component({
         selector: 'footer-section',
         templateUrl: 'layouts/sample/footer-section/footer-section.html'
-    }, demoModule)
+    })
     export class FooterSection implements ng.IComponentController {
         @bind.string()
         public yearRange: string;

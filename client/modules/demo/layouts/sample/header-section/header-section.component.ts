@@ -5,7 +5,7 @@ namespace demo.layouts.sample.headerSection {
     @Component({
         selector: 'header-section',
         templateUrl: 'layouts/sample/header-section/header-section.html'
-    }, demoModule)
+    })
     export class HeaderSection implements ng.IComponentController {
         @bind.oneWay()
         public product: string;

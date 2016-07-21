@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "homepage": "https://github.com/angular-template/ng1-template",
   "authors": [
-    "Jeevan James <jeevanjj@yahoo.com>"
+    "Angular Template"
   ],
   "description": "AngularJS, Typescript and Gulp template for large applications",
   "moduleType": [
@@ -24,6 +24,6 @@
     "angular-ui-router": "~0.3.1",
     "jquery": "~3.1.0",
     "lodash": "^4.13.1",
-    "ng1-template-core": "^1.0.0-alpha8"
+    "ng1-template-core": "^1.0.0-beta004"
   }
 }
