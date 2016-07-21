@@ -51,7 +51,7 @@
         "no-inferrable-types": false,
         "no-internal-module": true,
         "no-invalid-this": true,
-        "no-mergeable-namespace": true,
+        "no-mergeable-namespace": false,
         "no-namespace": false,
         "no-null-keyword": true,
         "no-reference": false,

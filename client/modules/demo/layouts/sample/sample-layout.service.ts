@@ -7,7 +7,8 @@ namespace demo.layouts.sample {
         public getMenuItems(): MenuItems {
             return [
                 { name: home.name, text: 'Home' },
-                { name: 'component-basics', text: 'Component Basics' },
+                { name: componentBasics.name, text: 'Component Basics' },
+                { name: customers.name, text: 'Customers' },
             ];
         }
     }

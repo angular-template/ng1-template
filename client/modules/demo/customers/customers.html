@@ -1,0 +1,16 @@
+<div>
+    <table>
+        <tr>
+            <th>ID</td>
+            <th>First Name</td>
+            <th>Last Name</td>
+            <th>Start Date</td>
+        </tr>
+        <tr ng-repeat="c in customers.customers">
+            <td>{{c.id}}</td>
+            <td>{{c.firstName}}</td>
+            <td>{{c.lastName}}</td>
+            <td>{{c.startDate | date}}</td>
+        </tr>
+    </table>
+</div>
