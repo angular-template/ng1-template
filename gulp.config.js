@@ -38,7 +38,7 @@ module.exports = function () {
     const bowerJsFiles = wiredep({devDependencies: true})['js'];
 
     // Module definitions
-    const appModule = createModule('app');
+    // const appModule = createModule('app');
     const securityModule = createModule('security');
     const commonModule = createModule('common');
     const demoModule = createModule('demo', {
@@ -54,7 +54,7 @@ module.exports = function () {
     });
 
     //Specify modules in increasing order of dependencies.
-    const modules = [commonModule, demoModule, securityModule, appModule];
+    const modules = [commonModule, demoModule, securityModule];
 
     const config = {
         preferences: {
@@ -65,6 +65,15 @@ module.exports = function () {
         //List of modules ordered from least dependent to most.
         //The main application module should come last.
         modules: modules,
+
+        coreDependencies: [
+            'ng1Template.core',
+            'ngSanitize',
+            'ngAnimate',
+            'ngMessages',
+            'ngAria',
+            'ui.router',
+        ],
 
         //Common folders
         folders: {

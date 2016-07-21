@@ -72,7 +72,8 @@ gulp.task(tsks.dev.serve, [tsks.dev.build], () => {
 
 gulp.task(tsks.dev.build, done => {
     let tasks = [
-        tsks.dev.clean, tsks.shell.generate,
+        tsks.dev.clean,
+        tsks.shell.generate,
         [tsks.inject.vendor, 'compile_scripts', 'compile_styles'],
         'create_config',
         [tsks.inject.local, 'copy_static_to_dev'],
@@ -118,6 +119,82 @@ function getModulePlaceholders() {
             `    <!-- endbuild -->\r\n\r\n`, '');
 }
 
+gulp.task('generate_modules', done => {
+    const fs = require('fs');
+    const os = require('os');
+
+    for (let i = 0; i < config.modules.length; i++) {
+        let moduleCode = buildModuleCode(config.modules, i)
+            .concat('')
+            .join(os.EOL);
+        let name = config.modules[i].name;
+        fs.writeFileSync(`${config.folders.modules}${name}/${name}.module.ts`, moduleCode);
+    }
+
+    done();
+});
+
+function buildModuleCode(modules, index) {
+    let module = modules[index];
+    let code = [
+        `// tslint:disable`,
+        `namespace ${module.name} {`,
+        `    import core = ng1Template.core;`,
+        ``,
+        `    export const ${module.name}Module: ng.IModule = angular.module('${module.name}', [`
+    ];
+    for (let i = index - 1; i >= 0; i--) {
+        code.push(`        '${modules[i].name}',`);
+    }
+    for (let i = 0; i < (config.coreDependencies.length || []); i++) {
+        code.push(`        '${config.coreDependencies[i]}',`);
+    }
+    if (module.dependencies && module.dependencies.length) {
+        for (let i = 0; i < module.dependencies.length; i++) {
+            code.push(`        '${module.dependencies[i]}',`);
+        }
+    }
+    code = code.concat([
+        `    ]);`,
+        ``,
+        `    export let Component: core.ComponentDecoratorFactory = (`,
+        `        details: core.IComponentDetails, route?: core.IComponentRoute`,
+        `    ): core.ClassDecorator => {`,
+        `        return (target: Function): void => {`,
+        `            core.registerComponent({`,
+        `                name: details.selector,`,
+        `                controller: target,`,
+        `                templateUrl: details.templateUrl,`,
+        `                templateUrlRoot: details.templateUrlRoot,`,
+        `                route: route`,
+        `            }, ${module.name}Module);`,
+        `        };`,
+        `    };`,
+        ``,
+        `    export let Layout: core.LayoutDecoratorFactory = (details: core.ILayoutDetails): core.ClassDecorator => {`,
+        `        return (target: Function): void => {`,
+        `            core.registerLayout({`,
+        `                name: details.name,`,
+        `                controller: target,`,
+        `                templateUrl: details.templateUrl,`,
+        `                templateUrlRoot: details.templateUrlRoot`,
+        `            }, ${module.name}Module);`,
+        `        };`,
+        `    };`,
+        ``,
+        `    export let Injectable: core.InjectorDecoratorFactory = (): core.ClassDecorator => {`,
+        `        return (target: Function): void => {`,
+        `            core.registerService({`,
+        `                service: target,`,
+        `                module: ${module.name}Module`,
+        `            });`,
+        `        };`,
+        `    };`,
+        `}`
+    ]);
+    return code;
+}
+
 gulp.task(tsks.inject.vendor, () => {
     log('Wiring up Bower script dependencies.');
 
@@ -127,7 +204,7 @@ gulp.task(tsks.inject.vendor, () => {
         .pipe(gulp.dest(config.folders.client))
 });
 
-gulp.task('compile_scripts', ['generate-app-def'], () => {
+gulp.task('compile_scripts', ['generate_modules', 'generate-app-def'], () => {
     log('Transpiling Typescript code to JavaScript');
 
     let appCompileSrc = gulp.src([].concat(config.definitions.all, `${config.folders.modules}app.ts`))
@@ -509,6 +586,7 @@ function serve(isDev) {
 
 gulp.task(tsks.vet.vet, done => {
     sequence(tsks.definitions.generate,
+        'generate_modules',
         tsks.vet._compileTs, tsks.vet._lintTs,
         tsks.vet._compileCss,
         done);

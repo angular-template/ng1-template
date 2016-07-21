@@ -15,6 +15,7 @@ typings/
 # Generated files
 ./tslint.json
 client/index.html
+client/modules/**/*.module.ts
 
 # JavaScript and map files, except in the assets folder
 client/modules/**/*.js
