@@ -15,6 +15,9 @@ let customHost = args.customHost;
 let failOnVetError = args.failOnVetError;
 let debug = args.debug;
 
+//let cfg = require('./tools/gulp/config');
+//console.log(cfg);
+
 const tsks = {
     help: 'help',
     default: 'default',
