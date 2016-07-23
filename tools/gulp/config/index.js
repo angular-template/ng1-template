@@ -1,3 +1,12 @@
+/**
+ * @description
+ * Builds the configuration object needed for the Gulp tasks to run.
+ *
+ * The configuration creation process is broken into multiple modules to allow easy customization,
+ * maintenance and updates.
+ *
+ * See the README.md file for more details.
+ */
 //TODO: Change any configuration that iterates through modules to use a delegate.
 
 let config = {};
@@ -62,7 +71,7 @@ config.config = {
 
 // Typescript definition file config
 const appTypingsFileName = 'app.d.ts';
-const appTypingsFile = `${config.folders.typings}appTypingsFileName`;
+const appTypingsFile = `${config.folders.typings}${appTypingsFileName}`;
 const typingFiles = [
     `${config.folders.typings}index.d.ts`,
     appTypingsFile
@@ -123,22 +132,22 @@ config.server = require('./dev-server');
 //TODO: Temporary or refactor
 config.getStyleAssets = (cssFolder, cssParentFolder) => [
     {
-        src: bowerFolder + 'bootstrap/dist/fonts/**/*.*',
+        src: `${config.folders.bower}bootstrap/dist/fonts/**/*.*`,
         dest: cssParentFolder + 'fonts/',
         areImages: false
     },
     {
-        src: bowerFolder + 'font-awesome/fonts/**/*.*',
+        src: `${config.folders.bower}font-awesome/fonts/**/*.*`,
         dest: cssParentFolder + 'fonts/',
         areImages: false
     },
     {
-        src: assetsFolder + 'images/**/*.*',
+        src: `${config.folders.assets}images/**/*.*`,
         dest: cssParentFolder + 'images/',
         areImages: true
     },
     {
-        src: config.folders.assets + 'fonts/*',
+        src: `${config.folders.assets}fonts/*`,
         dest: cssParentFolder + 'fonts/',
         areImages: false
     }

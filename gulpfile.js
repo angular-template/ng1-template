@@ -1,7 +1,12 @@
 'use strict';
 
 let gulp = require('gulp');
-let config = require('./gulp.config')();
+
+// let config = require('./gulp.config')();
+let config = require('./tools/gulp/config');
+let utils = require('./tools/gulp/utils');
+let tsks = require('./tools/gulp/task-names');
+
 let del = require('del');
 let args = require('yargs').argv;
 let sequence = require('run-sequence');
@@ -14,57 +19,6 @@ let launch = args.launch;
 let customHost = args.customHost;
 let failOnVetError = args.failOnVetError;
 let debug = args.debug;
-
-gulp.task('t', done => {
-    let cfg = require('./tools/gulp/config');
-    let fs = require('fs');
-    let contents = fs.readFileSync(cfg.shell, 'utf8');
-    console.log(contents);
-    done();
-});
-
-const tsks = {
-    help: 'help',
-    default: 'default',
-    definitions: {
-        generate: 'generate-app-def',
-        delete: 'app_def_delete',
-        copyTemplate: 'app_def_copy_template'
-    },
-    dev: {
-        serve: 'serve',
-        build: 'build',
-        clean: 'clean_dev'
-    },
-    dist: {
-        serve: 'serve-dist',
-        build: 'build-dist',
-        clean: 'clean_dist'
-    },
-    inject: {
-        vendor: 'inject_bower_scripts',
-        local: 'inject_custom_scripts',
-        ngTemplates: 'inject_ng_templates'
-    },
-    ngTemplateCache: {
-        generate: 'generate_ng_template_caches'
-    },
-    shell: {
-        generate: 'generate_shell_html',
-        delete: 'delete_shell_html',
-        copyTemplate: 'copy_shell_html_template'
-    },
-    vet: {
-        vet: 'vet',
-        _compileTs: 'vet_compile_ts',
-        _lintTs: 'vet_lint_ts',
-        _lintTsCopyConfig: 'vet_lint_ts_copy_config',
-        _lintTsRun: 'vet_lint_ts_run_lint',
-        _lintTsIncrementCounter: 'vet_lint_ts_increment_counter',
-        _compileCss: 'vet_compile_less',
-        _lintCss: 'vet_lint_less'
-    }
-};
 
 ////////// Task Listing & Default Task //////////
 
@@ -102,10 +56,10 @@ gulp.task(tsks.dev.clean, done => {
    it due to the inject tasks can be ignored. */
 gulp.task(tsks.shell.generate, done => {
     log('Generating the index.html shell file.');
-    sequence(tsks.shell.delete, tsks.shell.copyTemplate, done);
+    sequence(tsks.shell.deleteFile, tsks.shell.copyTemplate, done);
 });
 
-gulp.task(tsks.shell.delete, done => {
+gulp.task(tsks.shell.deleteFile, done => {
     clean(config.shell, done);
 });
 
@@ -213,7 +167,7 @@ gulp.task(tsks.inject.vendor, () => {
         .pipe(gulp.dest(config.folders.client))
 });
 
-gulp.task('compile_scripts', ['generate_modules', 'generate-app-def'], () => {
+gulp.task('compile_scripts', ['generate_modules', tsks.definitions.generate], () => {
     log('Transpiling Typescript code to JavaScript');
 
     let appCompileSrc = gulp.src([].concat(config.definitions.all, `${config.folders.modules}app.ts`))
@@ -281,7 +235,7 @@ gulp.task(tsks.inject.local, () => {
     config.modules.forEach(mod => {
         jsSrc = gulp.src([].concat(
             mod.jsToInject,
-            config.exclude(config.injections.firstJs)
+            utils.exclude(config.injections.firstJs)
         ));
         jsOptions = {
             starttag: `<!-- inject:${mod.name}:js -->`
@@ -462,23 +416,23 @@ gulp.task('copy_webserver_configs_to_dist', () => {
 
 gulp.task(tsks.definitions.generate, done => {
     log(`Generating a single Typescript definition file (${config.definitions.appFileName}) for all custom Typescript files.`);
-    sequence('app_def_delete',
-        'app_def_copy_template',
-        'app_def_generate',
+    sequence(tsks.definitions.deleteFile,
+        tsks.definitions.copyTemplate,
+        tsks.definitions.inject,
         done);
 });
 
-gulp.task('app_def_delete', done => {
+gulp.task(tsks.definitions.deleteFile, done => {
     clean(config.definitions.appFile, done);
 });
 
-gulp.task('app_def_copy_template', () =>
+gulp.task(tsks.definitions.copyTemplate, () =>
     gulp.src(config.definitions.appTemplate)
         .pipe($.rename(config.definitions.appFileName))
         .pipe(gulp.dest(config.folders.typings))
 );
 
-gulp.task('app_def_generate', () => {
+gulp.task(tsks.definitions.inject, () => {
     let tsFiles = config.modules.reduce((files, mod) =>
         files.concat(mod.tsToCompile || [`${mod.folder}**/*.ts`])
     , [`${config.folders.modules}app.ts`]);
