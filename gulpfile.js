@@ -4,8 +4,8 @@ let gulp = require('gulp');
 
 // let config = require('./gulp.config')();
 let config = require('./tools/gulp/config');
-let utils = require('./tools/gulp/utils');
-let tsks = require('./tools/gulp/task-names');
+let utils = require('./tools/gulp/tasks/utils');
+let tsks = require('./tools/gulp/tasks/task-names');
 
 let del = require('del');
 let args = require('yargs').argv;
@@ -19,6 +19,9 @@ let launch = args.launch;
 let customHost = args.customHost;
 let failOnVetError = args.failOnVetError;
 let debug = args.debug;
+
+let requireDir = require('require-dir');
+requireDir( './tools/gulp/tasks', { recurse: true } );
 
 ////////// Task Listing & Default Task //////////
 
@@ -48,19 +51,19 @@ gulp.task(tsks.dev.build, done => {
 });
 
 gulp.task(tsks.dev.clean, done => {
-    clean(config.folders.devBuild, done);
+    utils.clean(config.folders.devBuild, done);
 });
 
 /* Creates a fresh index.html file from the index.html.template.
    By doing this, we do not have to have index.html in version control, so the constant changes to
    it due to the inject tasks can be ignored. */
 gulp.task(tsks.shell.generate, done => {
-    log('Generating the index.html shell file.');
+    utils.log('Generating the index.html shell file.');
     sequence(tsks.shell.deleteFile, tsks.shell.copyTemplate, done);
 });
 
 gulp.task(tsks.shell.deleteFile, done => {
-    clean(config.shell, done);
+    utils.clean(config.shell, done);
 });
 
 gulp.task(tsks.shell.copyTemplate, () => {
@@ -159,7 +162,7 @@ function buildModuleCode(modules, index) {
 }
 
 gulp.task(tsks.inject.vendor, () => {
-    log('Wiring up Bower script dependencies.');
+    utils.log('Wiring up Bower script dependencies.');
 
     let wiredep = require('wiredep').stream;
     return gulp.src(config.shell)
@@ -168,7 +171,7 @@ gulp.task(tsks.inject.vendor, () => {
 });
 
 gulp.task('compile_scripts', ['generate_modules', tsks.definitions.generate], () => {
-    log('Transpiling Typescript code to JavaScript');
+    utils.log('Transpiling Typescript code to JavaScript');
 
     let appCompileSrc = gulp.src([].concat(config.definitions.all, `${config.folders.modules}app.ts`))
         .pipe($.typescript(config.options.typescriptBuild));
@@ -191,7 +194,7 @@ gulp.task('compile_scripts', ['generate_modules', tsks.definitions.generate], ()
 });
 
 gulp.task('compile_styles', () => {
-    log('Compiling LESS files to CSS stylesheets');
+    utils.log('Compiling LESS files to CSS stylesheets');
 
     let tasks = config.modules.map(mod =>
         gulp.src(mod.lessToCompile)
@@ -203,7 +206,7 @@ gulp.task('compile_styles', () => {
 });
 
 gulp.task('create_config', () => {
-    log('Generating AngularJS constants file to store environment-specific configuration.');
+    utils.log('Generating AngularJS constants file to store environment-specific configuration.');
 
     return gulp.src(config.config.src)
         .pipe($.ngConfig(config.config.moduleName, {
@@ -214,7 +217,7 @@ gulp.task('create_config', () => {
 });
 
 gulp.task(tsks.inject.local, () => {
-    log('Injecting local script and CSS references.');
+    utils.log('Injecting local script and CSS references.');
 
     let configSrc = gulp.src(config.config.defaultOutput);
     let configOptions = {
@@ -248,7 +251,7 @@ gulp.task(tsks.inject.local, () => {
 });
 
 gulp.task('copy_static_to_dev', () => {
-    log('Copying static JavaScript, CSS and style asset files to dev build folder.');
+    utils.log('Copying static JavaScript, CSS and style asset files to dev build folder.');
 
     let globalCssTask = gulp.src(config.staticFiles.css)
         .pipe(gulp.dest(config.folders.devBuildStyles));
@@ -281,7 +284,7 @@ gulp.task(tsks.dist.serve, [tsks.dist.build], () => {
 });
 
 gulp.task(tsks.dist.build, done => {
-    log('Building the distribution deployment of the application.');
+    utils.log('Building the distribution deployment of the application.');
 
     sequence('vet',
         tsks.dist.clean,
@@ -296,7 +299,7 @@ gulp.task(tsks.dist.build, done => {
 });
 
 gulp.task(tsks.dist.clean, done => {
-    clean(config.folders.distBuild, done);
+    utils.clean(config.folders.distBuild, done);
 });
 
 gulp.task('create_env_configs', done => {
@@ -305,7 +308,7 @@ gulp.task('create_env_configs', done => {
         return;
     }
 
-    log('Creating environment-specific config files.');
+    utils.log('Creating environment-specific config files.');
 
     let tasks = config.config.generateEnvs.map(env =>
         gulp.src(config.config.src)
@@ -320,7 +323,7 @@ gulp.task('create_env_configs', done => {
 });
 
 gulp.task(tsks.inject.ngTemplates, [tsks.ngTemplateCache.generate], () => {
-    log('Injecting Angular templates caches')
+    utils.log('Injecting Angular templates caches')
     let task = gulp.src(config.shell)
         .pipe($.plumber());
 
@@ -336,7 +339,7 @@ gulp.task(tsks.inject.ngTemplates, [tsks.ngTemplateCache.generate], () => {
 });
 
 gulp.task(tsks.ngTemplateCache.generate, () => {
-    log('Generating Angular template caches.');
+    utils.log('Generating Angular template caches.');
 
     //TODO: Move this to gulp.config.js to control per project.
     let htmlMinOptions = {
@@ -358,7 +361,7 @@ gulp.task(tsks.ngTemplateCache.generate, () => {
 });
 
 gulp.task('copy_to_dist', () => {
-    log('Copying config, images, fonts and non-cached HTML templates to the dist folder.');
+    utils.log('Copying config, images, fonts and non-cached HTML templates to the dist folder.');
     let configCopyTask = gulp.src(config.config.generatedFiles)
         .pipe(gulp.dest(config.folders.distBuild));
     return merge(getStyleAssetsCopyTasks(
@@ -368,7 +371,7 @@ gulp.task('copy_to_dist', () => {
 });
 
 gulp.task('optimize_build', () => {
-    log('Performing optimization for dist - bundling, minification and cache busting.');
+    utils.log('Performing optimization for dist - bundling, minification and cache busting.');
 
     return gulp.src(config.shell)
         .pipe($.useref({searchPath: './'}))
@@ -397,13 +400,13 @@ gulp.task('rename_rev_shell', (done) => {
 });
 
 gulp.task('copy_webserver_configs_to_dist', () => {
-    log('Copying custom web server configurations to the dist folder.');
+    utils.log('Copying custom web server configurations to the dist folder.');
     let tasks = [];
     for (let webServer in config.webServerConfigs) {
         if (!config.webServerConfigs.hasOwnProperty(webServer)) {
             continue;
         }
-        log(`    Found web server config for: ${webServer}`);
+        utils.log(`    Found web server config for: ${webServer}`);
         let cfg = config.webServerConfigs[webServer];
         let task = gulp.src(config.folders.webserver + cfg.src)
             .pipe(gulp.dest(config.folders.distBuild + (cfg.dest || '')));
@@ -415,7 +418,7 @@ gulp.task('copy_webserver_configs_to_dist', () => {
 ////////// App definition file generation tasks //////////
 
 gulp.task(tsks.definitions.generate, done => {
-    log(`Generating a single Typescript definition file (${config.definitions.appFileName}) for all custom Typescript files.`);
+    utils.log(`Generating a single Typescript definition file (${config.definitions.appFileName}) for all custom Typescript files.`);
     sequence(tsks.definitions.deleteFile,
         tsks.definitions.copyTemplate,
         tsks.definitions.inject,
@@ -423,7 +426,7 @@ gulp.task(tsks.definitions.generate, done => {
 });
 
 gulp.task(tsks.definitions.deleteFile, done => {
-    clean(config.definitions.appFile, done);
+    utils.clean(config.definitions.appFile, done);
 });
 
 gulp.task(tsks.definitions.copyTemplate, () =>
@@ -461,7 +464,7 @@ gulp.task('config_watch_handler', done => {
 });
 
 gulp.task('watch_handler_done', done => {
-    log('Changes handled! Please reload browser.', $.util.colors.bgGreen);
+    utils.log('Changes handled! Please reload browser.', $.util.colors.bgGreen);
     done();
 });
 
@@ -489,7 +492,7 @@ function serve(isDev) {
         }, []);
         gulp.watch(tsToWatch, ['ts_watch_handler']);
         // gulp.watch(tsToWatch, event => {
-        //     log(`[${event.type}] ${event.path}`, $.util.colors.bgYellow);
+        //     utils.log(`[${event.type}] ${event.path}`, $.util.colors.bgYellow);
         // });
         let lessToWatch = config.modules.reduce((files, mod) => {
             let fixedFiles = mod.lessToWatch.map(less => startsWith(less, './') ? less.substr(2) : less);
@@ -525,7 +528,7 @@ function serve(isDev) {
             console.log('[nodemon] Restarted ' + ev);
         })
         .on('start', () => {
-            log('[nodemon] Starting on port ' + port);
+            utils.log('[nodemon] Starting on port ' + port);
             if (launch || (typeof launch !== 'undefined')) {
                 if (launch === 1) {
                     open('http://localhost:' + port);
@@ -538,10 +541,10 @@ function serve(isDev) {
 
         })
         .on('crash', () => {
-            log('[nodemon] Crashed')
+            utils.log('[nodemon] Crashed')
         })
         .on('exit', () => {
-            log('[nodemon] Exited cleanly')
+            utils.log('[nodemon] Exited cleanly')
         });
 }
 
@@ -556,7 +559,7 @@ gulp.task(tsks.vet.vet, done => {
 });
 
 gulp.task(tsks.vet._compileTs, () => {
-    log('[Vet] Compiling Typescript files');
+    utils.log('[Vet] Compiling Typescript files');
     let tsToCompile = config.modules.reduce((files, mod) => files.concat(mod.tsToCompile || [`${mod.folder}**/*.ts`]), config.definitions.all);
     let tsOptions = config.options.typescriptVet;
     tsOptions.noEmitOnError = !failOnVetError;
@@ -586,7 +589,7 @@ gulp.task(tsks.vet._lintTsCopyConfig, () =>
 );
 
 gulp.task(tsks.vet._lintTsRun, () => {
-    log(config.tslint[tslintIndex].description);
+    utils.log(config.tslint[tslintIndex].description);
     return gulp.src(config.tslint[tslintIndex].files)
         .pipe($.tslint({
             formatter: 'verbose'
@@ -599,18 +602,18 @@ gulp.task(tsks.vet._lintTsRun, () => {
 
 gulp.task(tsks.vet._lintTsIncrementCounter, done => {
     tslintIndex += 1;
-    clean(`${config.folders.root}tslint.json`, done);
+    utils.clean(`${config.folders.root}tslint.json`, done);
 });
 
 gulp.task(tsks.vet._compileCss, () => {
-    log('[Vet] Compiling LESS files');
+    utils.log('[Vet] Compiling LESS files');
     let lessToCompile = config.modules.reduce((files, mod) => files.concat(mod.lessToCompile), []);
     return gulp.src(lessToCompile)
         .pipe($.less());
 });
 
 gulp.task(tsks.vet._lintCss, () => {
-    log('[Vet] Linting LESS files');
+    utils.log('[Vet] Linting LESS files');
     let lessToLint = config.modules.reduce((files, mod) => files.concat(mod.lessToLint), []);
     return gulp.src(lessToLint)
         .pipe($.lesshint());
@@ -621,7 +624,7 @@ gulp.task(tsks.vet._lintCss, () => {
 gulp.task('clean', ['clean_dist', 'clean_dev']);
 
 gulp.task('setup', () => {
-    log('Creating GIT hooks.');
+    utils.log('Creating GIT hooks.');
     return gulp.src('./.pre-commit')
         .pipe($.symlink('./.git/hooks/pre-commit', {force: true}));
 });
@@ -639,27 +642,6 @@ function getStyleAssetsCopyTasks(cssFolder, cssParentFolder, optimizeImages) {
         return gulpTask.pipe(gulp.dest(asset.dest));
     });
     return gulpTasks;
-}
-
-function clean(path, done) {
-    log('Cleaning: ' + path);
-    del(path);
-    done(); //TODO: Bug with current version of del that prevents passing done as the second parameter.
-}
-
-function log(message, color) {
-    if (!color) {
-        color = $.util.colors.bgBlue;
-    }
-    if (typeof(message) === 'object') {
-        for (let item in message) {
-            if (message.hasOwnProperty(item)) {
-                $.util.log(color(message[item]));
-            }
-        }
-    } else {
-        $.util.log(color(message));
-    }
 }
 
 function gulpSrc(glob, debugTitle) {
