@@ -16,6 +16,22 @@ config.coreDependencies = modules.coreDependencies;
 // Path to the shell file
 config.shell = `${config.folders.client}index.html`;
 
+// Temporary
+config.staticFiles = {
+    css: [],
+    js: []
+};
+config.injections = {};
+config.injections.css = require('./styles').injections;
+config.injections.firstJs = [].concat(
+    modules.modules.reduce((files, mod) => {
+        files.unshift(`${config.folders.devBuildScripts}${mod.name}/config/*.js`);
+        files.unshift(`${config.folders.devBuildScripts}${mod.name}/${mod.name}.module.js`);
+        files.unshift(`${config.folders.devBuildScripts}app.js`);
+        return files;
+    }, [])
+);
+
 // Styles
 config.styles = require('./styles');
 
@@ -51,6 +67,7 @@ const typingFiles = [
     `${config.folders.typings}index.d.ts`,
     appTypingsFile
 ];
+//TODO: Change name to typings
 config.definitions = {
     //File name of the definition file for application files.
     appFileName: appTypingsFileName,
@@ -93,5 +110,38 @@ config.webServerConfigs = {
 
 // NPM and Gulp package options
 config.options = require('./npm-options');
+
+// Bower
+//TODO: Refactor
+config.bower = {
+    jsFiles: require('wiredep')({ devDependencies: true })['js']
+};
+
+// Server
+config.server = require('./dev-server');
+
+//TODO: Temporary or refactor
+config.getStyleAssets = (cssFolder, cssParentFolder) => [
+    {
+        src: bowerFolder + 'bootstrap/dist/fonts/**/*.*',
+        dest: cssParentFolder + 'fonts/',
+        areImages: false
+    },
+    {
+        src: bowerFolder + 'font-awesome/fonts/**/*.*',
+        dest: cssParentFolder + 'fonts/',
+        areImages: false
+    },
+    {
+        src: assetsFolder + 'images/**/*.*',
+        dest: cssParentFolder + 'images/',
+        areImages: true
+    },
+    {
+        src: config.folders.assets + 'fonts/*',
+        dest: cssParentFolder + 'fonts/',
+        areImages: false
+    }
+];
 
 module.exports = config;

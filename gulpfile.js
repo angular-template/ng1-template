@@ -15,8 +15,13 @@ let customHost = args.customHost;
 let failOnVetError = args.failOnVetError;
 let debug = args.debug;
 
-//let cfg = require('./tools/gulp/config');
-//console.log(cfg);
+gulp.task('t', done => {
+    let cfg = require('./tools/gulp/config');
+    let fs = require('fs');
+    let contents = fs.readFileSync(cfg.shell, 'utf8');
+    console.log(contents);
+    done();
+});
 
 const tsks = {
     help: 'help',
