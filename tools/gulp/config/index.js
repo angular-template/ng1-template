@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * @description
  * Builds the configuration object needed for the Gulp tasks to run.

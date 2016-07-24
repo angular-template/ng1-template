@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
     // Throws an exception if the vet task fails.
     // Useful when used in continuous integration scenarios, to cause the process to fail.

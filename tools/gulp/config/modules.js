@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * @description
  * Define the modules in the application. Each module is a folder under the client/modules folder

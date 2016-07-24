@@ -1,3 +1,5 @@
+'use strict';
+
 let folders = require('./core.folders');
 
 //TODO: No need for customHostPort any more.
