@@ -2,15 +2,15 @@
 
 let gulp = require('gulp');
 
-// let config = require('./gulp.config')();
 let config = require('./tools/gulp/config');
 let utils = require('./tools/gulp/tasks/utils');
 let tsks = require('./tools/gulp/tasks/task-names');
 
-let del = require('del');
 let args = require('yargs').argv;
 let sequence = require('run-sequence');
 let merge = require('merge2');
+let _ = require('lodash');
+
 let $ = require('gulp-load-plugins')({lazy: true});
 
 let port = process.env.PORT || config.server.nodeHostPort;
@@ -21,7 +21,7 @@ let failOnVetError = args.failOnVetError;
 let debug = args.debug;
 
 let requireDir = require('require-dir');
-requireDir( './tools/gulp/tasks', { recurse: true } );
+requireDir('./tools/gulp/tasks', { recurse: true } );
 
 ////////// Task Listing & Default Task //////////
 
@@ -53,36 +53,6 @@ gulp.task(tsks.dev.build, done => {
 gulp.task(tsks.dev.clean, done => {
     utils.clean(config.folders.devBuild, done);
 });
-
-/* Creates a fresh index.html file from the index.html.template.
-   By doing this, we do not have to have index.html in version control, so the constant changes to
-   it due to the inject tasks can be ignored. */
-gulp.task(tsks.shell.generate, done => {
-    utils.log('Generating the index.html shell file.');
-    sequence(tsks.shell.deleteFile, tsks.shell.copyTemplate, done);
-});
-
-gulp.task(tsks.shell.deleteFile, done => {
-    utils.clean(config.shell, done);
-});
-
-gulp.task(tsks.shell.copyTemplate, () => {
-    let modulePlaceholders = getModulePlaceholders();
-    return gulp.src(`${config.folders.client}index.html.template`)
-        .pipe($.injectString.replace('<!-- custom-modules -->', modulePlaceholders))
-        .pipe($.rename('index.html'))
-        .pipe(gulp.dest(config.folders.client))
-});
-
-function getModulePlaceholders() {
-    return config.modules.reduce((ph, mod) =>
-        ph + `    <!-- build:js js/${mod.name}.js -->\r\n` +
-            `    <!-- inject:${mod.name}:js -->\r\n` +
-            `    <!-- endinject -->\r\n` +
-            `    <!-- inject:${mod.name}-templates:js -->\r\n` +
-            `    <!-- endinject -->\r\n` +
-            `    <!-- endbuild -->\r\n\r\n`, '');
-}
 
 gulp.task('generate_modules', done => {
     const fs = require('fs');
@@ -173,24 +143,16 @@ gulp.task(tsks.inject.vendor, () => {
 gulp.task('compile_scripts', ['generate_modules', tsks.definitions.generate], () => {
     utils.log('Transpiling Typescript code to JavaScript');
 
-    let appCompileSrc = gulp.src([].concat(config.definitions.all, `${config.folders.modules}app.ts`))
+    let filesToCompile = [].concat(
+        config.definitions.all,
+        `${config.folders.modules}**/*.ts`
+    );
+    let compileTask = gulp.src(filesToCompile)
         .pipe($.typescript(config.options.typescriptBuild));
-    let appCompileTask = appCompileSrc.js
+    return compileTask.js
         .pipe($.ngAnnotate())
         .pipe($.stripLine(`/// <reference path="`))
         .pipe(gulp.dest(config.folders.devBuildScripts));
-
-    let tasks = config.modules.map(mod => {
-        let tsProject = $.typescript.createProject('tsconfig.json');
-        let tsToCompile = mod.tsToCompile || [`${mod.folder}**/*.ts`];
-        let compileTask = gulp.src([].concat(config.definitions.all, tsToCompile))
-            .pipe($.typescript(config.options.typescriptBuild));
-        return compileTask.js
-            .pipe($.ngAnnotate())
-            .pipe($.stripLine(`/// <reference path="`))
-            .pipe(gulp.dest(mod.jsOutputFolder));
-    });
-    return merge([appCompileTask].concat(tasks));
 });
 
 gulp.task('compile_styles', () => {
@@ -393,6 +355,7 @@ gulp.task('rename_rev_shell', (done) => {
     }
 
     let vinylPaths = require('vinyl-paths');
+    let del = require('del');
     return gulp.src(`${config.folders.distBuild}${revFileName}`)
         .pipe(vinylPaths(del))
         .pipe($.rename('index.html'))
@@ -417,37 +380,6 @@ gulp.task('copy_webserver_configs_to_dist', () => {
 
 ////////// App definition file generation tasks //////////
 
-gulp.task(tsks.definitions.generate, done => {
-    utils.log(`Generating a single Typescript definition file (${config.definitions.appFileName}) for all custom Typescript files.`);
-    sequence(tsks.definitions.deleteFile,
-        tsks.definitions.copyTemplate,
-        tsks.definitions.inject,
-        done);
-});
-
-gulp.task(tsks.definitions.deleteFile, done => {
-    utils.clean(config.definitions.appFile, done);
-});
-
-gulp.task(tsks.definitions.copyTemplate, () =>
-    gulp.src(config.definitions.appTemplate)
-        .pipe($.rename(config.definitions.appFileName))
-        .pipe(gulp.dest(config.folders.typings))
-);
-
-gulp.task(tsks.definitions.inject, () => {
-    let tsFiles = config.modules.reduce((files, mod) =>
-        files.concat(mod.tsToCompile || [`${mod.folder}**/*.ts`])
-    , [`${config.folders.modules}app.ts`]);
-    let tsFilesSrc = gulp.src(tsFiles, {read: false});
-    return gulp.src(config.definitions.appFile)
-        .pipe($.inject(tsFilesSrc, {
-            starttag: '//{',
-            endtag: '//}',
-            transform: filePath => `/// <reference path="..${filePath}" />`
-        }))
-        .pipe(gulp.dest(config.folders.typings));
-});
 
 ////////// Serve & watch tasks and helper function //////////
 
@@ -469,17 +401,6 @@ gulp.task('watch_handler_done', done => {
 });
 
 function serve(isDev) {
-
-    function startsWith(str, checkStr) {
-        if (!checkStr) {
-            return true;
-        }
-        if (checkStr.length > str.length) {
-            return false;
-        }
-        return str.indexOf(checkStr) === 0;
-    }
-
     //Before serving, keep watch for changes to any Typescript or LESS files, so they are
     //automatically recompiled. This applies only to DEV mode.
     //Note: There is an issue with gulp.watch that prevents it from detecting new or deleted files
@@ -487,7 +408,7 @@ function serve(isDev) {
     //See: http://stackoverflow.com/a/26851844
     if (isDev) {
         let tsToWatch = config.modules.reduce((files, mod) => {
-            let fixedFiles = (mod.tsToCompile || [`${mod.folder}**/*.ts`]).map(ts => startsWith(ts, './') ? ts.substr(2) : ts);
+            let fixedFiles = (mod.tsToCompile || [`${mod.folder}**/*.ts`]).map(ts => _.startsWith(ts, './') ? ts.substr(2) : ts);
             return files.concat(fixedFiles);
         }, []);
         gulp.watch(tsToWatch, ['ts_watch_handler']);
@@ -495,7 +416,7 @@ function serve(isDev) {
         //     utils.log(`[${event.type}] ${event.path}`, $.util.colors.bgYellow);
         // });
         let lessToWatch = config.modules.reduce((files, mod) => {
-            let fixedFiles = mod.lessToWatch.map(less => startsWith(less, './') ? less.substr(2) : less);
+            let fixedFiles = mod.lessToWatch.map(less => _.startsWith(less, './') ? less.substr(2) : less);
             return files.concat(fixedFiles);
         }, []);
         gulp.watch(lessToWatch, ['less_watch_handler']);
@@ -560,10 +481,13 @@ gulp.task(tsks.vet.vet, done => {
 
 gulp.task(tsks.vet._compileTs, () => {
     utils.log('[Vet] Compiling Typescript files');
-    let tsToCompile = config.modules.reduce((files, mod) => files.concat(mod.tsToCompile || [`${mod.folder}**/*.ts`]), config.definitions.all);
+    let filesToCompile = [].concat(
+        config.definitions.all,
+        `${config.folders.modules}**/*.ts`
+    );
     let tsOptions = config.options.typescriptVet;
     tsOptions.noEmitOnError = !failOnVetError;
-    return gulp.src(tsToCompile)
+    return gulp.src(filesToCompile)
         .pipe($.typescript(tsOptions));
 });
 
@@ -597,7 +521,7 @@ gulp.task(tsks.vet._lintTsRun, () => {
         .pipe($.tslint.report({
             emitError: failOnVetError,
             bell: true
-        }))
+        }));
 });
 
 gulp.task(tsks.vet._lintTsIncrementCounter, done => {
@@ -619,16 +543,6 @@ gulp.task(tsks.vet._lintCss, () => {
         .pipe($.lesshint());
 });
 
-////////// Misc tasks //////////
-
-gulp.task('clean', ['clean_dist', 'clean_dev']);
-
-gulp.task('setup', () => {
-    utils.log('Creating GIT hooks.');
-    return gulp.src('./.pre-commit')
-        .pipe($.symlink('./.git/hooks/pre-commit', {force: true}));
-});
-
 ////////// Helper functions //////////
 
 function getStyleAssetsCopyTasks(cssFolder, cssParentFolder, optimizeImages) {
@@ -642,11 +556,4 @@ function getStyleAssetsCopyTasks(cssFolder, cssParentFolder, optimizeImages) {
         return gulpTask.pipe(gulp.dest(asset.dest));
     });
     return gulpTasks;
-}
-
-function gulpSrc(glob, debugTitle) {
-    let task = gulp.src(glob);
-    if (debug)
-        task = task.pipe($.debug({title: `[${debugTitle}]`}));
-    return task;
 }

@@ -2,11 +2,13 @@
 
 var express = require('express');
 var compression = require('compression');
-var config = require('../gulp.config.js')();
+
+let server = require('../tools/gulp/config/dev-server');
+let modules = require('../tools/gulp/config/modules').modules;
 
 var app = express();
 
-var port = process.env.PORT || config.server.nodeHostPort;
+var port = process.env.PORT || server.nodeHostPort;
 var environment = process.env.NODE_ENV || 'dev';
 
 var staticOptions = {
@@ -21,9 +23,9 @@ if (environment === 'dev') {
     //Note: we're specifying specific folders under /client because we do
     //not want to expose certain subfolders such as assets (the correct
     //location would be under the .dev folder) and utils.
-    for (var i = 0; i < config.modules.length; i++) {
-        app.use('/client/modules/' + config.modules[i].name,
-            express.static('./client/modules/' + config.modules[i].name + '/', staticOptions));
+    for (var i = 0; i < modules.length; i++) {
+        app.use('/client/modules/' + modules[i].name,
+            express.static('./client/modules/' + modules[i].name + '/', staticOptions));
     }
     app.use('/.build/.dev',
         express.static('./.build/.dev/', staticOptions));

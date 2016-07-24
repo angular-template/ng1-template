@@ -10,7 +10,7 @@ let util = require('gulp-util');
  * @param done Callback to invoke once the delete is completed.
  */
 function clean(path, done) {
-    log(`Deleting: ${path}`);
+    log(`    Deleting: ${path}`, util.colors.bgMagenta);
     del(path);
     done(); //TODO: Bug with current version of del that prevents passing done as the second parameter.
 }

@@ -88,7 +88,7 @@ config.definitions = {
 
     //Empty template of the definition file for application files.
     //Contains only the necessary placeholders for the injector.
-    appTemplate: `${config.folders.tools}app-typings/app.d.ts.template`,
+    appTemplate: `${config.folders.tools}templates/app.d.ts.template`,
 
     //List of all definition files (application, bower, etc.)
     all: typingFiles
