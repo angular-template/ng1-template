@@ -95,29 +95,10 @@ config.definitions = {
 };
 
 // TSLint config settings
-//TODO: Change files to a delegate that accepts the module
-config.tslint = [
-    {
-        description: 'Default rules',
-        config: `${config.folders.tools}tslint/tslint.json`,
-        files: config.modules
-            .reduce((files, mod) => files.concat(mod.tsToCompile || `${mod.folder}**/*.ts`), [])
-    }
-];
+config.tslint = require('./tslint');
 
 // Web server configs
-config.webServerConfigs = {
-    iis: {
-        src: 'web.config'
-    },
-    apache: {
-        src: '.htaccess'
-    },
-    tomcat: {
-        src: 'WEB-INF/**/*.*',
-        dest: 'WEB-INF/'
-    }
-};
+config.webServerConfigs = require('./webserver-configs');
 
 // NPM and Gulp package options
 config.options = require('./npm-options');
