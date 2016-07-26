@@ -4,7 +4,7 @@
   "description": "AngularJS, Typescript and Gulp template for large applications",
   "scripts": {
     "postinstall": "bower install && typings install && gulp setup",
-    "firebase": "gulp build-dist && firebase deploy"
+    "firebase": "gulp build-dist --env=prod && firebase deploy"
   },
   "main": "server/server.js",
   "repository": {
