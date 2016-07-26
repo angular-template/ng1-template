@@ -10,7 +10,7 @@ let utils = require('./utils');
 let config = require('../config/index');
 let folders = require('../config/core.folders');
 let modules = require('../config/modules');
-let shell = require('../config/shell');
+let shell = require('../config/core.shell');
 
 /* Creates a fresh index.html file from the index.html.template.
    By doing this, we do not have to have index.html in version control, so the constant changes to

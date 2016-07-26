@@ -3,7 +3,7 @@
 let express = require('express');
 let compression = require('compression');
 
-let server = require('../tools/gulp/config/dev-server');
+let server = require('../tools/gulp/config/core.server');
 let modules = require('../tools/gulp/config/modules').modules;
 
 let app = express();

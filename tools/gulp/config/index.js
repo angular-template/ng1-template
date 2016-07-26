@@ -25,7 +25,7 @@ config.modules = modules.modules;
 config.coreDependencies = modules.coreDependencies;
 
 // Shell file
-config.shell = require('./shell');
+config.shell = require('./core.shell');
 
 // Temporary
 config.injections = {};
@@ -105,7 +105,7 @@ config.bower = {
 };
 
 // Server
-config.server = require('./dev-server');
+config.server = require('./core.server');
 
 //TODO: Temporary or refactor
 config.getStyleAssets = (cssFolder, cssParentFolder) => [
