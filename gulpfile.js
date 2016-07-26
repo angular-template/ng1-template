@@ -168,7 +168,7 @@ gulp.task('handle_styles', done => {
 });
 
 gulp.task('styles:compile_less', done => {
-    utils.log('Compiling LESS files to CSS stylesheets');
+    utils.log2('Compiling LESS files to CSS stylesheets');
 
     let lessFiles = config.modules.reduce(
         (files, mod) => files.concat(mod.styles.less || []),
@@ -183,7 +183,7 @@ gulp.task('styles:compile_less', done => {
 });
 
 gulp.task('styles:compile_sass', done => {
-    utils.log('Compiling SASS files to CSS stylesheets');
+    utils.log2('Compiling SASS files to CSS stylesheets');
     throw new Error('SASS support not yet available.');
 });
 
@@ -235,18 +235,10 @@ gulp.task(tsks.inject.local, () => {
 gulp.task('copy_static_to_dev', () => {
     utils.log('Copying static JavaScript, CSS and style asset files to dev build folder.');
 
-    let globalCssTask = gulp.src(config.staticFiles.css)
-        .pipe(gulp.dest(config.folders.devBuildStyles));
-
     let jsCssTasks = config.modules.reduce((t, mod) => {
         if (!!mod.jsToCopy) {
             t.push(gulp.src(mod.jsToCopy)
                 .pipe(gulp.dest(mod.jsOutputFolder))
-            );
-        }
-        if (!!mod.cssToCopy) {
-            t.push(gulp.src(mod.cssToCopy)
-                .pipe(gulp.dest(config.folders.devBuildStyles))
             );
         }
         return t;
@@ -256,7 +248,7 @@ gulp.task('copy_static_to_dev', () => {
         config.folders.devBuild,
         false
     );
-    return merge(jsCssTasks.concat(assetTasks, globalCssTask));
+    return merge(jsCssTasks.concat(assetTasks));
 });
 
 ////////// Distribution Build Tasks //////////
@@ -395,20 +387,24 @@ gulp.task('copy_webserver_configs_to_dist', () => {
 
 ////////// Serve & watch tasks and helper function //////////
 
-gulp.task('ts_watch_handler', done => {
+gulp.task('watch:ts_handler', done => {
     sequence('compile_scripts', 'inject_custom_scripts', 'watch_handler_done', done);
 });
 
-gulp.task('less_watch_handler', done => {
+gulp.task('watch:css_handler', done => {
+    sequence('inject_custom_scripts', 'watch_handler_done', done);
+});
+
+gulp.task('watch:less_handler', done => {
     sequence('handle_styles', 'inject_custom_scripts', 'watch_handler_done', done);
 });
 
-gulp.task('config_watch_handler', done => {
+gulp.task('watch:config_handler', done => {
     sequence('create_config', done);
 });
 
-gulp.task('watch_handler_done', done => {
-    utils.log('Changes handled! Please reload browser.', $.util.colors.bgGreen);
+gulp.task('watch:handler_done', done => {
+    utils.log('Changes handled! Please reload browser.', $.util.colors.white.bgGreen);
     done();
 });
 
@@ -419,20 +415,45 @@ function serve(isDev) {
     //if the glob is absolute or starts with './'. Hence the code below to fix it.
     //See: http://stackoverflow.com/a/26851844
     if (isDev) {
-        let tsToWatch = config.modules.reduce((files, mod) => {
-            let fixedFiles = (mod.tsToCompile || [`${mod.folder}**/*.ts`]).map(ts => _.startsWith(ts, './') ? ts.substr(2) : ts);
-            return files.concat(fixedFiles);
-        }, []);
-        gulp.watch(tsToWatch, ['ts_watch_handler']);
-        // gulp.watch(tsToWatch, event => {
-        //     utils.log(`[${event.type}] ${event.path}`, $.util.colors.bgYellow);
-        // });
-        let lessToWatch = config.modules.reduce((files, mod) => {
-            let fixedFiles = mod.lessToWatch.map(less => _.startsWith(less, './') ? less.substr(2) : less);
-            return files.concat(fixedFiles);
-        }, []);
-        gulp.watch(lessToWatch, ['less_watch_handler']);
-        gulp.watch(config.config.src, ['config_watch_handler']);
+        function fixPaths(paths) {
+            return paths.map(path => _.startsWith(path, './') ? path.substr(2) : path);
+        }
+
+        function logChanges(watcher) {
+            watcher.on('change', ev => {
+                utils.log(`[${ev.type}] ${ev.path}`, $.util.colors.blue.bgWhite);
+            });
+        }
+
+        let tsToWatch = fixPaths([].concat(
+            config.definitions.all,
+            `${config.modules}**/*.ts`
+        ));
+        let tsWatcher = gulp.watch(tsToWatch, ['watch:ts_handler']);
+        logChanges(tsWatcher);
+
+        let cssToWatch = fixPaths([].concat(
+            `${config.folders.assets}**/*.css`,
+            `${config.folders.modules}**/*.css`
+        ));
+        let cssWatcher = gulp.watch(cssToWatch, ['watch:css_handler']);
+        logChanges(cssWatcher);
+
+        if (config.styles.usesLess) {
+            let lessToWatch = fixPaths([
+                `${config.folders.assets}**/*.less`,
+                `${config.folders.modules}**/*.less`
+            ]);
+            let lessWatcher = gulp.watch(lessToWatch, ['watch:less_handler']);
+            logChanges(lessWatcher);
+        }
+
+        if (config.styles.usesSass) {
+            //TODO: Handle SASS
+        }
+
+        let configWatcher = gulp.watch(config.config.src, ['watch:config_handler']);
+        logChanges(configWatcher);
     }
 
     let open = require('open');
@@ -442,7 +463,7 @@ function serve(isDev) {
     //the browser on that port.
     if (customHost) {
         if (launch) {
-            open('http://localhost:' + config.server.customHostPort);
+            open(`http://localhost:${config.server.customHostPort}`);
         }
         return;
     }
@@ -457,19 +478,19 @@ function serve(isDev) {
         watch: ['./server/server.js']
     };
     return $.nodemon(nodeOptions)
-        .on('restart', ev => {
-            console.log('[nodemon] Restarted ' + ev);
+        .on('restart', () => {
+            console.log('[nodemon] Restarted');
         })
         .on('start', () => {
-            utils.log('[nodemon] Starting on port ' + port);
+            utils.log(`[nodemon] Starting on port ${port}`);
             if (launch || (typeof launch !== 'undefined')) {
                 if (launch === 1) {
-                    open('http://localhost:' + port);
+                    open(`http://localhost:${port}`);
                 } else if (typeof launch === 'string') {
-                    open('http://localhost:' + port + launch);
+                    open(`http://localhost:${port}${launch}`);
                 }
             } else {
-                open('http://localhost:' + port);
+                open(`http://localhost:${port}`);
             }
 
         })

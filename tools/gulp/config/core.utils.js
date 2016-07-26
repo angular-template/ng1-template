@@ -41,11 +41,6 @@ function _assignDefaults(name, opts) {
         `config/*.config.js`
     ],
 
-    opts.lessToCompile = opts.lessToCompile || [];
-    opts.lessToLint = opts.lessToLint || ['**/*.less'];
-    opts.lessToWatch = opts.lessToWatch || ['**/*.ts'];
-    opts.cssToCopy = opts.cssToCopy || [];
-
     opts.htmls = opts.htmls || {
         all: '**/*.html',
         root: `/client/modules/${name}`,
@@ -74,11 +69,6 @@ function _makeAbsolutePaths(name, opts) {
     opts.jsOutputFolder = _makeFolder(`${folders.devBuildScripts}${opts.jsOutputFolder}/`);
     opts.jsToInject = _prefixAll(opts.jsToInject, opts.jsOutputFolder);
     opts.firstInjectJs = _prefixAll(opts.firstInjectJs, opts.jsOutputFolder);
-
-    opts.lessToCompile = _prefixAll(opts.lessToCompile, opts.folder);
-    opts.lessToLint = _prefixAll(opts.lessToLint, opts.folder);
-    opts.lessToWatch = _prefixAll(opts.lessToWatch, opts.folder);
-    opts.cssToCopy = _prefixAll(opts.cssToCopy, opts.folder);
 
     opts.htmls.all = `${opts.folder}${opts.htmls.all}`;
     opts.htmls.toCache = `${opts.folder}${opts.htmls.toCache}`;

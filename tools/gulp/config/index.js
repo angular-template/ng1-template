@@ -27,11 +27,6 @@ config.coreDependencies = modules.coreDependencies;
 // Path to the shell file
 config.shell = `${config.folders.client}index.html`;
 
-// Temporary
-config.staticFiles = {
-    css: [],
-    js: []
-};
 config.injections = {};
 config.injections.css = require('./styles').injections;
 config.injections.firstJs = [].concat(

@@ -13,14 +13,14 @@ let debug = args.debug;
  * @param done Callback to invoke once the delete is completed.
  */
 function clean(path, done) {
-    log(`    Deleting: ${path}`, $.util.colors.bgMagenta);
+    log2(`Deleting: ${path}`);
     del(path);
     done(); //TODO: Bug with current version of del that prevents passing done as the second parameter.
 }
 
 function log(message, color) {
     if (!color) {
-        color = $.util.colors.bgBlue;
+        color = $.util.colors.white.bgBlue;
     }
     if (typeof message === 'object') {
         for (let item in message) {
@@ -31,6 +31,10 @@ function log(message, color) {
     } else {
         $.util.log(color(message));
     }
+}
+
+function log2(message, color) {
+    log(`    ${message}`, color || $.util.colors.white.bgCyan);
 }
 
 /**
@@ -78,5 +82,6 @@ module.exports = {
     exclude: exclude,
     excludeSpecs: excludeSpecs,
     log: log,
+    log2: log2,
     src: src
 };

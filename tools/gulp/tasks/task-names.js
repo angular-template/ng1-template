@@ -39,7 +39,7 @@ module.exports = {
         _lintTsCopyConfig: 'vet:lint_ts_copy_config',
         _lintTsRun: 'vet:lint_ts_run_lint',
         _lintTsIncrementCounter: 'vet:lint_ts_increment_counter',
-        _compileCss: 'vet:compile_less',
-        _lintCss: 'vet:lint_less'
+        _compileLess: 'vet:compile_less',
+        _lintLess: 'vet:lint_less'
     }
 };
