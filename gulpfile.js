@@ -21,12 +21,6 @@ let customHost = args.customHost;
 let requireDir = require('require-dir');
 requireDir('./tools/gulp/tasks', { recurse: true } );
 
-////////// Task Listing & Default Task //////////
-
-gulp.task(tsks.help, $.taskListing.withFilters(/_/, task => task === tsks.default || task === tsks.help));
-
-gulp.task(tsks.default, [tsks.dev.serve]);
-
 ////////// Dev Build Tasks //////////
 
 gulp.task(tsks.dev.serve, [tsks.dev.build], () => {
@@ -375,9 +369,6 @@ gulp.task('copy_webserver_configs_to_dist', () => {
     }
     return merge(tasks);
 });
-
-////////// App definition file generation tasks //////////
-
 
 ////////// Serve & watch tasks and helper function //////////
 
