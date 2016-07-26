@@ -7,9 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title shared-title="shell.title">Angular Template</title>
-
-    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+    <title>Angular Template</title>
 
     <!-- build:css css/app.css -->
     <!-- inject:css -->

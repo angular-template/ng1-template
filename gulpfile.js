@@ -128,7 +128,7 @@ gulp.task(tsks.inject.vendor, () => {
     utils.log('Wiring up Bower script dependencies.');
 
     let wiredep = require('wiredep').stream;
-    return gulp.src(config.shell)
+    return gulp.src(config.shell.file)
         .pipe(wiredep(config.options.wiredep))
         .pipe(gulp.dest(config.folders.client))
 });
@@ -211,7 +211,7 @@ gulp.task(tsks.inject.local, () => {
 
     let firstJsSrc = gulp.src(config.injections.firstJs);
 
-    let injectTask = utils.src(config.shell, 'local-inject')
+    let injectTask = utils.src(config.shell.file, 'local-inject')
         .pipe($.inject(configSrc, configOptions))
         .pipe($.inject(cssSrc))
         .pipe($.inject(firstJsSrc));
@@ -298,7 +298,7 @@ gulp.task('create_env_configs', done => {
 
 gulp.task(tsks.inject.ngTemplates, [tsks.ngTemplateCache.generate], () => {
     utils.log('Injecting Angular templates caches')
-    let task = gulp.src(config.shell)
+    let task = gulp.src(config.shell.file)
         .pipe($.plumber());
 
     task = config.modules.reduce((taskResult, mod) => {
@@ -342,7 +342,7 @@ gulp.task('copy_to_dist', () => {
 gulp.task('optimize_build', () => {
     utils.log('Performing optimization for dist - bundling, minification and cache busting.');
 
-    return utils.src(config.shell, 'optimize')
+    return utils.src(config.shell.file, 'optimize')
         .pipe($.useref({searchPath: './'}))
         .pipe($.if('*.js', $.uglify()))
         .pipe($.if('*.css', $.csso()))

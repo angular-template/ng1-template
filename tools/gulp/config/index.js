@@ -24,11 +24,11 @@ let modules = require('./modules');
 config.modules = modules.modules;
 config.coreDependencies = modules.coreDependencies;
 
-// Path to the shell file
-config.shell = `${config.folders.client}index.html`;
+// Shell file
+config.shell = require('./shell');
 
+// Temporary
 config.injections = {};
-config.injections.css = require('./styles').injections;
 config.injections.firstJs = [].concat(
     modules.modules.reduce((files, mod) => {
         files.unshift(`${config.folders.devBuildScripts}${mod.name}/config/*.js`);
