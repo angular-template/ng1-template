@@ -22,4 +22,13 @@ namespace app {
     appModule.component('app', {
         template: '<div ui-view></div>'
     });
+
+    /**
+     * Environment-specific configurations for the entire application.
+     * The values are specified in the config.json file at the /client folder.
+     */
+    export interface IConfig {
+        name: string,
+        apiBaseUrl: string;
+    }
 }

@@ -28,11 +28,6 @@ let demoModule = utils.createModule('demo', {
     jsToInject: [
         'layouts/**/*.js',
         '**/*.js'
-    ],
-    cssToCopy: [
-        'layouts/sample/normalize.css',
-        'layouts/sample/skeleton.css',
-        'home/home.css'
     ]
 });
 

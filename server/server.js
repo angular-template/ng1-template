@@ -20,13 +20,8 @@ if (environment === 'dev') {
         express.static('./bower_components/', staticOptions));
     app.use('/images',
         express.static('./.build/.dev/images/', staticOptions));
-    //Note: we're specifying specific folders under /client because we do
-    //not want to expose certain subfolders such as assets (the correct
-    //location would be under the .dev folder) and utils.
-    for (let i = 0; i < modules.length; i++) {
-        app.use(`/client/modules/${modules[i].name}`,
-            express.static(`./client/modules/${modules[i].name}/`, staticOptions));
-    }
+    app.use('/client',
+        express.static('./client/', staticOptions));
     app.use('/.build/.dev',
         express.static('./.build/.dev/', staticOptions));
     app.get('/**', function(req, res) {

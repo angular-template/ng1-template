@@ -6,7 +6,6 @@ let del = require('del');
 let args = require('yargs').argv;
 
 let debug = args.debug;
-console.log(`Debug is : ${debug || 'unknown'}`);
 
 /**
  * Deletes the specified file(s) or folder(s).
@@ -60,10 +59,16 @@ function excludeSpecs(glob) {
     }, []);
 }
 
+//TODO: Make this a configuration
+let usePlumber = false;
+
 function src(glob, debugTitle) {
     let task = gulp.src(glob);
     if (debug) {
         task = task.pipe($.debug({ title: `[${debugTitle}]` }));
+    }
+    if (usePlumber) {
+        task = task.pipe($.plumber());
     }
     return task;
 }

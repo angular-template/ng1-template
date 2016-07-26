@@ -31,7 +31,8 @@ gulp.task(tsks.dev.build, done => {
     let tasks = [
         tsks.dev.clean,
         tsks.shell.generate,
-        [tsks.inject.vendor, 'compile_scripts', 'compile_styles'],
+        [tsks.inject.vendor, 'compile_scripts'],
+        'handle_styles',
         'create_config',
         [tsks.inject.local, 'copy_static_to_dev'],
         done
@@ -65,7 +66,7 @@ function buildModuleCode(modules, index) {
     let module = modules[index];
     let code = [
         `// tslint:disable`,
-        `namespace ${module.name} {`,
+        `namespace ${module.ns || module.name} {`,
         `    import core = ng1Template.core;`,
         ``,
         `    export const ${module.name}Module: ng.IModule = angular.module('${module.name}', [`
@@ -147,16 +148,43 @@ gulp.task('compile_scripts', ['generate_modules', tsks.definitions.generate], ()
         .pipe(gulp.dest(config.folders.devBuildScripts));
 });
 
-gulp.task('compile_styles', () => {
+gulp.task('handle_styles', done => {
+    utils.log('Handling styles for the application.');
+
+    if (!config.styles.usesLess && !config.styles.usesSass) {
+        done();
+        return;
+    }
+
+    let tasks = [];
+    if (config.styles.usesLess) {
+        tasks.push('styles:compile_less');
+    }
+    if (config.styles.usesSass) {
+        tasks.push('styles:compile_sass');
+    }
+    tasks.push(done);
+    sequence.apply(this, tasks);
+});
+
+gulp.task('styles:compile_less', done => {
     utils.log('Compiling LESS files to CSS stylesheets');
 
-    let tasks = config.modules.map(mod =>
-        gulp.src(mod.lessToCompile)
-            .pipe($.plumber())
-            .pipe($.less())
-            .pipe(gulp.dest(config.folders.devBuildStyles))
+    let lessFiles = config.modules.reduce(
+        (files, mod) => files.concat(mod.styles.less || []),
+        config.styles.less || []
     );
-    return merge(tasks);
+    if (lessFiles.length === 0) {
+        done();
+    }
+    return utils.src(lessFiles, 'compile-less')
+        .pipe($.less())
+        .pipe(gulp.dest(config.folders.devBuildStyles));
+});
+
+gulp.task('styles:compile_sass', done => {
+    utils.log('Compiling SASS files to CSS stylesheets');
+    throw new Error('SASS support not yet available.');
 });
 
 gulp.task('create_config', () => {
@@ -178,12 +206,12 @@ gulp.task(tsks.inject.local, () => {
         starttag: '<!-- inject:config:js -->'
     };
 
-    let cssFiles = (config.injections.css || []).map(file => `${config.folders.devBuildStyles}${file}`);
+    let cssFiles = config.styles.injections || [];
     let cssSrc = gulp.src(cssFiles, {read: false});
 
     let firstJsSrc = gulp.src(config.injections.firstJs);
 
-    let injectTask = gulp.src(config.shell)
+    let injectTask = utils.src(config.shell, 'local-inject')
         .pipe($.inject(configSrc, configOptions))
         .pipe($.inject(cssSrc))
         .pipe($.inject(firstJsSrc));
@@ -295,21 +323,16 @@ gulp.task(tsks.inject.ngTemplates, [tsks.ngTemplateCache.generate], () => {
 gulp.task(tsks.ngTemplateCache.generate, () => {
     utils.log('Generating Angular template caches.');
 
-    //TODO: Move this to gulp.config.js to control per project.
-    let htmlMinOptions = {
-        removeComments: true,
-        collapseWhitespace: true
-    };
     //TODO: Option to not minify for troubleshooting
     let tasks = config.modules.map(mod =>
-        gulp.src(mod.htmls.toCache)
-            .pipe($.htmlmin(htmlMinOptions))
+        utils.src(mod.htmls.toCache, 'template-cache')
+            .pipe($.htmlmin(config.options.htmlMin))
             .pipe($.angularTemplatecache(`${mod.name}-templates.js`, {
                 module: mod.name,
                 standAlone: false,
                 root: mod.htmls.root
             }))
-            .pipe(gulp.dest(config.folders.devBuildScripts + mod.name + '/'))
+            .pipe(gulp.dest(`${config.folders.devBuildScripts}${mod.name}/`))
     );
     return merge(tasks);
 });
@@ -377,7 +400,7 @@ gulp.task('ts_watch_handler', done => {
 });
 
 gulp.task('less_watch_handler', done => {
-    sequence('compile_styles', 'inject_custom_scripts', 'watch_handler_done', done);
+    sequence('handle_styles', 'inject_custom_scripts', 'watch_handler_done', done);
 });
 
 gulp.task('config_watch_handler', done => {

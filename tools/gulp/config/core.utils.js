@@ -14,6 +14,19 @@ function _assignDefaults(name, opts) {
     //Base source folder for the module
     opts.folder = opts.folder || name;
 
+    //Base namespace for the module
+    opts.ns = opts.ns || name;
+
+    //Additional dependencies for the module
+    opts.dependencies = opts.dependencies || [];
+
+    //Style specifications for the module
+    if (!opts.styles) {
+        opts.styles = {};
+    }
+    opts.styles.less = opts.styles.less || ['less/styles.less'];
+    opts.styles.sass = opts.styles.sass || ['sass/styles.sass'];
+
     //List of all Typescript files to compile.
     opts.tsToCompile = opts.tsToCompile || ['**/*.ts'];
     //Additional JavaScript files to copy to the output folder.
@@ -52,6 +65,9 @@ function _makeFolder(folder) {
 
 function _makeAbsolutePaths(name, opts) {
     opts.folder = _makeFolder(`${folders.modules}${opts.folder}`);
+
+    opts.styles.less = _prefixAll(opts.styles.less, opts.folder);
+    opts.styles.sass = _prefixAll(opts.styles.sass, opts.folder);
 
     opts.tsToCompile = _prefixAll(opts.tsToCompile, opts.folder);
     //TODO: opts.jsToCopy

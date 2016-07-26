@@ -31,4 +31,9 @@ options.typescriptVet = {
     experimentalDecorators: true
 };
 
+options.htmlMin = {
+    removeComments: true,
+    collapseWhitespace: true
+};
+
 module.exports = options;
