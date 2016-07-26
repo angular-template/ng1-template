@@ -17,8 +17,6 @@ let port = process.env.PORT || config.server.nodeHostPort;
 let environment = args.env || config.config.defaultEnv;
 let launch = args.launch;
 let customHost = args.customHost;
-let failOnVetError = args.failOnVetError;
-let debug = args.debug;
 
 let requireDir = require('require-dir');
 requireDir('./tools/gulp/tasks', { recurse: true } );
@@ -335,7 +333,7 @@ gulp.task('copy_to_dist', () => {
 gulp.task('optimize_build', () => {
     utils.log('Performing optimization for dist - bundling, minification and cache busting.');
 
-    return gulp.src(config.shell)
+    return utils.src(config.shell, 'optimize')
         .pipe($.useref({searchPath: './'}))
         .pipe($.if('*.js', $.uglify()))
         .pipe($.if('*.css', $.csso()))
@@ -468,80 +466,6 @@ function serve(isDev) {
             utils.log('[nodemon] Exited cleanly')
         });
 }
-
-////////// Vetting tasks //////////
-
-gulp.task(tsks.vet.vet, done => {
-    sequence(tsks.definitions.generate,
-        'generate_modules',
-        tsks.vet._compileTs, tsks.vet._lintTs,
-        tsks.vet._compileCss,
-        done);
-});
-
-gulp.task(tsks.vet._compileTs, () => {
-    utils.log('[Vet] Compiling Typescript files');
-    let filesToCompile = [].concat(
-        config.definitions.all,
-        `${config.folders.modules}**/*.ts`
-    );
-    let tsOptions = config.options.typescriptVet;
-    tsOptions.noEmitOnError = !failOnVetError;
-    return gulp.src(filesToCompile)
-        .pipe($.typescript(tsOptions));
-});
-
-let tslintIndex = 0;
-gulp.task(tsks.vet._lintTs, done => {
-    tslintIndex = 0;
-    let tasks = [];
-    for (let i = 0; i < config.tslint.length; i++) {
-        tasks.push(tsks.vet._lintTsCopyConfig);
-        tasks.push(tsks.vet._lintTsRun);
-        tasks.push(tsks.vet._lintTsIncrementCounter);
-    }
-    tasks.push(done);
-    sequence.apply(this, tasks);
-});
-
-/* Copies the tslint file specified in config from the tools/tslint folder to the root and renames
-   it to tslint.json. */
-gulp.task(tsks.vet._lintTsCopyConfig, () =>
-    gulp.src(config.tslint[tslintIndex].config)
-        .pipe($.rename('tslint.json'))
-        .pipe(gulp.dest(config.folders.root))
-);
-
-gulp.task(tsks.vet._lintTsRun, () => {
-    utils.log(config.tslint[tslintIndex].description);
-    return gulp.src(config.tslint[tslintIndex].files)
-        .pipe($.tslint({
-            formatter: 'verbose'
-        }))
-        .pipe($.tslint.report({
-            emitError: failOnVetError,
-            bell: true
-        }));
-});
-
-gulp.task(tsks.vet._lintTsIncrementCounter, done => {
-    tslintIndex += 1;
-    utils.clean(`${config.folders.root}tslint.json`, done);
-});
-
-gulp.task(tsks.vet._compileCss, () => {
-    utils.log('[Vet] Compiling LESS files');
-    let lessToCompile = config.modules.reduce((files, mod) => files.concat(mod.lessToCompile), []);
-    return gulp.src(lessToCompile)
-        .pipe($.less());
-});
-
-gulp.task(tsks.vet._lintCss, () => {
-    utils.log('[Vet] Linting LESS files');
-    let lessToLint = config.modules.reduce((files, mod) => files.concat(mod.lessToLint), []);
-    return gulp.src(lessToLint)
-        .pipe($.lesshint());
-});
 
 ////////// Helper functions //////////
 

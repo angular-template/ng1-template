@@ -1,8 +1,12 @@
 'use strict';
 
-let debug = require('gulp-debug');
+let gulp = require('gulp');
+let $ = require('gulp-load-plugins')({lazy: true});
 let del = require('del');
-let util = require('gulp-util');
+let args = require('yargs').argv;
+
+let debug = args.debug;
+console.log(`Debug is : ${debug || 'unknown'}`);
 
 /**
  * Deletes the specified file(s) or folder(s).
@@ -10,23 +14,23 @@ let util = require('gulp-util');
  * @param done Callback to invoke once the delete is completed.
  */
 function clean(path, done) {
-    log(`    Deleting: ${path}`, util.colors.bgMagenta);
+    log(`    Deleting: ${path}`, $.util.colors.bgMagenta);
     del(path);
     done(); //TODO: Bug with current version of del that prevents passing done as the second parameter.
 }
 
 function log(message, color) {
     if (!color) {
-        color = util.colors.bgBlue;
+        color = $.util.colors.bgBlue;
     }
     if (typeof message === 'object') {
         for (let item in message) {
             if (message.hasOwnProperty(item)) {
-                util.log(color(message[item]));
+                $.util.log(color(message[item]));
             }
         }
     } else {
-        util.log(color(message));
+        $.util.log(color(message));
     }
 }
 
@@ -58,8 +62,9 @@ function excludeSpecs(glob) {
 
 function src(glob, debugTitle) {
     let task = gulp.src(glob);
-    //TODO: if (debug)
-        task = task.pipe(debug({ title: `[${debugTitle}]` }));
+    if (debug) {
+        task = task.pipe($.debug({ title: `[${debugTitle}]` }));
+    }
     return task;
 }
 
@@ -67,5 +72,6 @@ module.exports = {
     clean: clean,
     exclude: exclude,
     excludeSpecs: excludeSpecs,
-    log: log
+    log: log,
+    src: src
 };
