@@ -7,9 +7,9 @@ namespace demo.componentBasics {
     @Component({
         selector: name
     }, {
-        path: '/demo/component-basics',
-        parent: layouts.sample.name
-    })
+            path: '/demo/component-basics',
+            parent: layouts.sample.name
+        })
     export class ComponentBasicsComponent implements ng.IComponentController {
     }
 }

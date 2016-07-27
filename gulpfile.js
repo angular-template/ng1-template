@@ -387,19 +387,19 @@ gulp.task('copy_webserver_configs_to_dist', () => {
 ////////// Serve & watch tasks and helper function //////////
 
 gulp.task('watch:ts_handler', done => {
-    sequence('compile_scripts', 'inject_custom_scripts', 'watch_handler_done', done);
+    sequence('compile_scripts', 'inject_custom_scripts', 'watch:handler_done', done);
 });
 
 gulp.task('watch:css_handler', done => {
-    sequence('inject_custom_scripts', 'watch_handler_done', done);
+    sequence('inject_custom_scripts', 'watch:handler_done', done);
 });
 
 gulp.task('watch:less_handler', done => {
-    sequence('handle_styles', 'inject_custom_scripts', 'watch_handler_done', done);
+    sequence('handle_styles', 'inject_custom_scripts', 'watch:handler_done', done);
 });
 
 gulp.task('watch:config_handler', done => {
-    sequence('create_config', done);
+    sequence('create_config', 'watch:handler_done', done);
 });
 
 gulp.task('watch:handler_done', done => {
@@ -415,7 +415,15 @@ function serve(isDev) {
     //See: http://stackoverflow.com/a/26851844
     if (isDev) {
         function fixPaths(paths) {
-            return paths.map(path => _.startsWith(path, './') ? path.substr(2) : path);
+            return paths.map(path => {
+                if (_.startsWith(path, '!./')) {
+                    return `!${path.substr(3)}`;
+                } else if (_.startsWith(path, './')) {
+                    return path.substr(2);
+                } else {
+                    return path;
+                }
+            });
         }
 
         function logChanges(watcher) {
@@ -425,8 +433,9 @@ function serve(isDev) {
         }
 
         let tsToWatch = fixPaths([].concat(
-            config.definitions.all,
-            `${config.modules}**/*.ts`
+            `${config.folders.modules}app.ts`,
+            `${config.folders.modules}**/*.ts`,
+            `!${config.folders.modules}**/*.module.ts`
         ));
         let tsWatcher = gulp.watch(tsToWatch, ['watch:ts_handler']);
         logChanges(tsWatcher);

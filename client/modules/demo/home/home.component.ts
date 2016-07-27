@@ -7,9 +7,9 @@ namespace demo.home {
     @Component({
         selector: name
     }, {
-        path: '/',
-        parent: layouts.sample.name
-    })
+            path: '/',
+            parent: layouts.sample.name
+        })
     export class HomeComponent implements ng.IComponentController {
     }
 }

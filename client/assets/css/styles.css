@@ -1,3 +1,7 @@
-html {
-    font-family: Cambria, Cochin, Georgia, Times, Times New Roman, serif;
-}
+/*
+  Starting point for global CSS styles.
+
+  You can add any number of CSS files and sub-folders under the this folder and all will be
+  processed as CSS as long as the files have a .css extension.
+  You can even rename this file to any other name.
+*/
