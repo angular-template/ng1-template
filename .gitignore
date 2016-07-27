@@ -21,8 +21,5 @@ client/modules/**/*.module.ts
 client/modules/**/*.js
 client/modules/**/*.js.map
 
-# CSS files, except in the assets folder
-client/modules/**/*.css
-
 # Log/debug files from tools like npm
 ./*.log
