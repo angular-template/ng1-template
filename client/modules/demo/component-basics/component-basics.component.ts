@@ -11,5 +11,7 @@ namespace demo.componentBasics {
             parent: layouts.sample.name
         })
     export class ComponentBasicsComponent implements ng.IComponentController {
+        public oneWay: string;
+        public twoWay: string;
     }
 }

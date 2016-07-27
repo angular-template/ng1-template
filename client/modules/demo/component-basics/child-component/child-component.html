@@ -1,0 +1,17 @@
+<div class="child-component-area">
+    <div>This is a child component. The values below demonstrate the various types of bindings.</div>
+    <div>
+        <h4>One-way binding</h4>
+        <div>Changes in the parent are reflected in the children, but not the other way round. Changes in the child only affect
+            the child scope and it's children, if any.</div>
+        <label>{{childComponent.oneWay}}</label>
+        <input type="text" ng-model="childComponent.oneWay" />
+    </div>
+    <hr/>
+    <div>
+        <h4>two-way binding</h4>
+        <div>Changes in the parent are reflected in the children, and vice-versa.</div>
+        <label>{{childComponent.twoWay}}</label>
+        <input type="text" ng-model="childComponent.twoWay" />
+    </div>
+</div>

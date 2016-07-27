@@ -235,20 +235,12 @@ gulp.task(tsks.inject.local, () => {
 gulp.task('copy_static_to_dev', () => {
     utils.log('Copying static JavaScript, CSS and style asset files to dev build folder.');
 
-    let jsCssTasks = config.modules.reduce((t, mod) => {
-        if (!!mod.jsToCopy) {
-            t.push(utils.src(mod.jsToCopy, 'static-assets')
-                .pipe(gulp.dest(mod.jsOutputFolder))
-            );
-        }
-        return t;
-    }, []);
     let assetTasks = getStyleAssetsCopyTasks(
         config.folders.devBuildStyles,
         config.folders.devBuild,
         false
     );
-    return merge(jsCssTasks.concat(assetTasks));
+    return merge(assetTasks);
 });
 
 ////////// Distribution Build Tasks //////////

@@ -67,27 +67,8 @@ config.config = {
 };
 
 // Typescript definition file config
-const appTypingsFileName = 'app.d.ts';
-const appTypingsFile = `${config.folders.typings}${appTypingsFileName}`;
-const typingFiles = [
-    `${config.folders.typings}index.d.ts`,
-    appTypingsFile
-];
 //TODO: Change name to typings
-config.definitions = {
-    //File name of the definition file for application files.
-    appFileName: appTypingsFileName,
-
-    //Path to the definition file for application files.
-    appFile: appTypingsFile,
-
-    //Empty template of the definition file for application files.
-    //Contains only the necessary placeholders for the injector.
-    appTemplate: `${config.folders.tools}templates/app.d.ts.template`,
-
-    //List of all definition files (application, bower, etc.)
-    all: typingFiles
-};
+config.definitions = require('./typings');
 
 // TSLint config settings
 config.tslint = require('./tslint');

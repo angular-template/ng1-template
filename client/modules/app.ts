@@ -28,7 +28,7 @@ namespace app {
      * The values are specified in the config.json file at the /client folder.
      */
     export interface IConfig {
-        name: string,
+        name: string;
         apiBaseUrl: string;
     }
 }

@@ -24,13 +24,9 @@ function _assignDefaults(name, opts) {
     if (!opts.styles) {
         opts.styles = {};
     }
-    opts.styles.less = opts.styles.less || ['less/styles.less'];
-    opts.styles.sass = opts.styles.sass || ['sass/styles.sass'];
+    opts.styles.less = opts.styles.less || [`${opts.name}.less`];
+    opts.styles.sass = opts.styles.sass || [`${opts.name}.less`];
 
-    //List of all Typescript files to compile.
-    opts.tsToCompile = opts.tsToCompile || ['**/*.ts'];
-    //Additional JavaScript files to copy to the output folder.
-    opts.jsToCopy = opts.jsToCopy || [];
     //Folder where the Typescript files are compiled to and the additional JavaScript files are copied to.
     opts.jsOutputFolder = opts.jsOutputFolder || name;
     //All the JavaScript files from the output folder to inject into the shell HTML, in the correct order.
@@ -43,7 +39,7 @@ function _assignDefaults(name, opts) {
 
     opts.htmls = opts.htmls || {
         all: '**/*.html',
-        root: `/client/modules/${name}`,
+        root: `/client/modules/${opts.folder}`,
         toCache: '**/*.html'
     };
 
@@ -64,8 +60,6 @@ function _makeAbsolutePaths(name, opts) {
     opts.styles.less = _prefixAll(opts.styles.less, opts.folder);
     opts.styles.sass = _prefixAll(opts.styles.sass, opts.folder);
 
-    opts.tsToCompile = _prefixAll(opts.tsToCompile, opts.folder);
-    //TODO: opts.jsToCopy
     opts.jsOutputFolder = _makeFolder(`${folders.devBuildScripts}${opts.jsOutputFolder}/`);
     opts.jsToInject = _prefixAll(opts.jsToInject, opts.jsOutputFolder);
     opts.firstInjectJs = _prefixAll(opts.firstInjectJs, opts.jsOutputFolder);

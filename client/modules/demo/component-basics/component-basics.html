@@ -1,4 +1,15 @@
 <div>
     <p>This page is constructed as a component. It is unique in that it has a route, and so can be navigated to.</p>
-    <form-field id="'firstName'" label="'First Name'"></form-field>
+    <h4>One-way value</h4>
+    <label>{{componentBasics.oneWay}}</label>
+    <input type="text" ng-model="componentBasics.oneWay"/>
+    <hr/>
+    <h4>Two-way value</h4>
+    <label>{{componentBasics.twoWay}}</label>
+    <input type="text" ng-model="componentBasics.twoWay"/>
+    <hr/>
+    <child-component
+        one-way="componentBasics.oneWay"
+        two-way="componentBasics.twoWay">
+    </child-component>
 </div>

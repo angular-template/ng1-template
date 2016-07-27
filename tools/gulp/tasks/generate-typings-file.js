@@ -8,6 +8,7 @@ let tsks = require('./task-names');
 let utils = require('./utils');
 
 let config = require('../config/index');
+let folders = require('../config/core.folders');
 let modules = require('../config/modules').modules;
 
 gulp.task(tsks.definitions.generate, done => {
@@ -25,13 +26,11 @@ gulp.task(tsks.definitions.deleteFile, done => {
 gulp.task(tsks.definitions.copyTemplate, () =>
     gulp.src(config.definitions.appTemplate)
         .pipe($.rename(config.definitions.appFileName))
-        .pipe(gulp.dest(config.folders.typings))
+        .pipe(gulp.dest(folders.typings))
 );
 
 gulp.task(tsks.definitions.inject, () => {
-    let tsFiles = modules.reduce((files, mod) =>
-        files.concat(mod.tsToCompile || [`${mod.folder}**/*.ts`])
-    , [`${config.folders.modules}app.ts`]);
+    let tsFiles = [`${folders.modules}**/*.ts`];
     let tsFilesSrc = gulp.src(tsFiles, {read: false});
     return gulp.src(config.definitions.appFile)
         .pipe($.inject(tsFilesSrc, {
@@ -39,5 +38,5 @@ gulp.task(tsks.definitions.inject, () => {
             endtag: '//}',
             transform: filePath => `/// <reference path="..${filePath}" />`
         }))
-        .pipe(gulp.dest(config.folders.typings));
+        .pipe(gulp.dest(folders.typings));
 });
