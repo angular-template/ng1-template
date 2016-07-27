@@ -140,7 +140,7 @@ gulp.task('compile_scripts', ['generate_modules', tsks.definitions.generate], ()
         config.definitions.all,
         `${config.folders.modules}**/*.ts`
     );
-    let compileTask = gulp.src(filesToCompile)
+    let compileTask = utils.src(filesToCompile, 'script-compile')
         .pipe($.typescript(config.options.typescriptBuild));
     return compileTask.js
         .pipe($.ngAnnotate())
@@ -190,7 +190,7 @@ gulp.task('styles:compile_sass', done => {
 gulp.task('create_config', () => {
     utils.log('Generating AngularJS constants file to store environment-specific configuration.');
 
-    return gulp.src(config.config.src)
+    return utils.src(config.config.src)
         .pipe($.ngConfig(config.config.moduleName, {
             environment: environment,
             createModule: false
@@ -237,7 +237,7 @@ gulp.task('copy_static_to_dev', () => {
 
     let jsCssTasks = config.modules.reduce((t, mod) => {
         if (!!mod.jsToCopy) {
-            t.push(gulp.src(mod.jsToCopy)
+            t.push(utils.src(mod.jsToCopy, 'static-assets')
                 .pipe(gulp.dest(mod.jsOutputFolder))
             );
         }
@@ -285,7 +285,7 @@ gulp.task('create_env_configs', done => {
     utils.log('Creating environment-specific config files.');
 
     let tasks = config.config.generateEnvs.map(env =>
-        gulp.src(config.config.src)
+        utils.src(config.config.src, 'env-config')
             .pipe($.ngConfig(config.config.moduleName, {
                 environment: env,
                 createModule: false
@@ -298,8 +298,7 @@ gulp.task('create_env_configs', done => {
 
 gulp.task(tsks.inject.ngTemplates, [tsks.ngTemplateCache.generate], () => {
     utils.log('Injecting Angular templates caches')
-    let task = gulp.src(config.shell.file)
-        .pipe($.plumber());
+    let task = utils.src(config.shell.file, 'ng-templates');
 
     task = config.modules.reduce((taskResult, mod) => {
         return taskResult.pipe($.inject(
@@ -331,7 +330,7 @@ gulp.task(tsks.ngTemplateCache.generate, () => {
 
 gulp.task('copy_to_dist', () => {
     utils.log('Copying config, images, fonts and non-cached HTML templates to the dist folder.');
-    let configCopyTask = gulp.src(config.config.generatedFiles)
+    let configCopyTask = utils.src(config.config.generatedFiles, 'copy-to-dist')
         .pipe(gulp.dest(config.folders.distBuild));
     return merge(getStyleAssetsCopyTasks(
         config.folders.distBuild + 'css/',
@@ -507,7 +506,7 @@ function serve(isDev) {
 function getStyleAssetsCopyTasks(cssFolder, cssParentFolder, optimizeImages) {
     let assets = config.getStyleAssets(cssFolder, cssParentFolder);
     let gulpTasks = assets.map(asset => {
-        let gulpTask = gulp.src([].concat(asset.src)).pipe($.plumber());
+        let gulpTask = utils.src([].concat(asset.src), 'style-assets');
         //TODO: Issue with image-min. Revisit.
         //if (asset.areImages && optimizeImages) {
         //    gulpTask = gulpTask.pipe($.imagemin({optimizationLevel: 4}));
