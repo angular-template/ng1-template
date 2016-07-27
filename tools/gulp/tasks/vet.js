@@ -8,9 +8,11 @@ let $ = require('gulp-load-plugins')({lazy: true});
 let tsks = require('./task-names');
 let utils = require('./utils');
 
-let config = require('../config/index');
+let folders = require('../config/core.folders');
 let options = require('../config/npm-options');
 let styles = require('../config/styles');
+let typings = require('../config/typings');
+let tslint = require('../config/tslint');
 
 let failOnVetError = args.failOnVetError;
 
@@ -29,10 +31,10 @@ gulp.task(tsks.vet.vet, done => {
 gulp.task(tsks.vet._compileTs, () => {
     utils.log2('[Vet] Compiling Typescript files');
     let filesToCompile = [].concat(
-        config.definitions.all,
-        `${config.folders.modules}**/*.ts`
+        typings.all,
+        `${folders.modules}**/*.ts`
     );
-    let tsOptions = config.options.typescriptVet;
+    let tsOptions = options.typescriptVet;
     tsOptions.noEmitOnError = !failOnVetError;
     return gulp.src(filesToCompile)
         .pipe($.typescript(tsOptions));
@@ -42,7 +44,7 @@ let tslintIndex = 0;
 gulp.task(tsks.vet._lintTs, done => {
     tslintIndex = 0;
     let tasks = [];
-    for (let i = 0; i < config.tslint.length; i++) {
+    for (let i = 0; i < tslint.length; i++) {
         tasks.push(tsks.vet._lintTsCopyConfig);
         tasks.push(tsks.vet._lintTsRun);
         tasks.push(tsks.vet._lintTsIncrementCounter);
@@ -54,14 +56,14 @@ gulp.task(tsks.vet._lintTs, done => {
 /* Copies the tslint file specified in config from the tools/tslint folder to the root and renames
    it to tslint.json. */
 gulp.task(tsks.vet._lintTsCopyConfig, () =>
-    gulp.src(config.tslint[tslintIndex].config)
+    gulp.src(tslint[tslintIndex].config)
         .pipe($.rename('tslint.json'))
-        .pipe(gulp.dest(config.folders.root))
+        .pipe(gulp.dest(folders.root))
 );
 
 gulp.task(tsks.vet._lintTsRun, () => {
-    utils.log(config.tslint[tslintIndex].description, $.util.colors.yellow.bgBlack);
-    return gulp.src(config.tslint[tslintIndex].files)
+    utils.log(tslint[tslintIndex].description, $.util.colors.yellow.bgBlack);
+    return gulp.src(tslint[tslintIndex].files)
         .pipe($.tslint({
             formatter: 'verbose'
         }))
@@ -73,14 +75,14 @@ gulp.task(tsks.vet._lintTsRun, () => {
 
 gulp.task(tsks.vet._lintTsIncrementCounter, done => {
     tslintIndex += 1;
-    utils.clean(`${config.folders.root}tslint.json`, done);
+    utils.clean(`${folders.root}tslint.json`, done);
 });
 
 gulp.task(tsks.vet._compileLess, () => {
     utils.log2('[Vet] Compiling LESS files');
-    let lessFiles = config.modules.reduce(
+    let lessFiles = modules.reduce(
         (files, mod) => files.concat(mod.styles.less || []),
-        config.styles.less || []
+        styles.less || []
     );
     return gulp.src(lessFiles)
         .pipe($.less());
@@ -88,7 +90,7 @@ gulp.task(tsks.vet._compileLess, () => {
 
 gulp.task(tsks.vet._lintLess, () => {
     utils.log2('[Vet] Linting LESS files');
-    let lessToLint = config.modules.reduce((files, mod) => files.concat(mod.lessToLint), []);
+    let lessToLint = modules.reduce((files, mod) => files.concat(mod.lessToLint), []);
     return gulp.src(lessToLint)
         .pipe($.lesshint());
 });

@@ -7,9 +7,8 @@ let $ = require('gulp-load-plugins')({lazy: true});
 let tsks = require('./task-names');
 let utils = require('./utils');
 
-let config = require('../config/index');
 let folders = require('../config/core.folders');
-let modules = require('../config/modules');
+let modules = require('../config/modules').modules;
 let shell = require('../config/core.shell');
 
 /* Creates a fresh index.html file from the index.html.template.
@@ -33,7 +32,7 @@ gulp.task(tsks.shell.copyTemplate, () => {
 });
 
 function getModulePlaceholders() {
-    return config.modules.reduce((ph, mod) =>
+    return modules.reduce((ph, mod) =>
         ph + `    <!-- build:js js/${mod.name}.js -->\r\n` +
             `    <!-- inject:${mod.name}:js -->\r\n` +
             `    <!-- endinject -->\r\n` +
