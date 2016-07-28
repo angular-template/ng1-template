@@ -6,9 +6,8 @@ let options = {};
 
 //Wiredep options for injecting Bower scripts.
 //See https://www.npmjs.com/package/wiredep for docs.
-const bowerConfig = `../../../${folders.root}bower.json`;
+// const bowerConfig = `../../../${folders.root}bower.json`;
 options.wiredep = {
-    bowerJson: require(bowerConfig),
     ignorePath: '..',
     exclude: []
 };

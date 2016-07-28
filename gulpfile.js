@@ -3,6 +3,11 @@
 let gulp = require('gulp');
 
 let config = require('./tools/gulp/config');
+
+// let ng1TemplateGulp = require('ng1-template-gulp');
+// let config = ng1TemplateGulp.config;
+// require('./gulp.config')(config);
+
 let utils = require('./tools/gulp/tasks/utils');
 let tsks = require('./tools/gulp/tasks/task-names');
 
@@ -128,8 +133,10 @@ gulp.task(tsks.inject.vendor, () => {
     utils.log('Wiring up Bower script dependencies.');
 
     let wiredep = require('wiredep').stream;
+    let options = config.options.wiredep;
+    options.bowerJson = require(`${config.folders.root}bower.json`);
     return gulp.src(config.shell.file)
-        .pipe(wiredep(config.options.wiredep))
+        .pipe(wiredep(options))
         .pipe(gulp.dest(config.folders.client))
 });
 
@@ -209,7 +216,7 @@ gulp.task(tsks.inject.local, () => {
     let cssFiles = config.styles.injections || [];
     let cssSrc = gulp.src(cssFiles, {read: false});
 
-    let firstJsSrc = gulp.src(config.injections.firstJs);
+    let firstJsSrc = gulp.src(config.injections.firstJs(config.modules));
 
     let injectTask = utils.src(config.shell.file, 'local-inject')
         .pipe($.inject(configSrc, configOptions))
@@ -220,7 +227,7 @@ gulp.task(tsks.inject.local, () => {
     config.modules.forEach(mod => {
         jsSrc = gulp.src([].concat(
             mod.jsToInject,
-            utils.exclude(config.injections.firstJs)
+            utils.exclude(config.injections.firstJs(config.modules))
         ));
         jsOptions = {
             starttag: `<!-- inject:${mod.name}:js -->`

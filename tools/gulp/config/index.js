@@ -29,14 +29,16 @@ config.shell = require('./core.shell');
 
 // Temporary
 config.injections = {};
-config.injections.firstJs = [].concat(
-    modules.modules.reduce((files, mod) => {
-        files.unshift(`${config.folders.devBuildScripts}${mod.name}/config/*.js`);
-        files.unshift(`${config.folders.devBuildScripts}${mod.name}/${mod.name}.module.js`);
-        files.unshift(`${config.folders.devBuildScripts}app.js`);
-        return files;
-    }, [])
-);
+config.injections.firstJs = function(mods) {
+    return [].concat(
+        modules.modules.reduce((files, mod) => {
+            files.unshift(`${config.folders.devBuildScripts}${mod.name}/config/*.js`);
+            files.unshift(`${config.folders.devBuildScripts}${mod.name}/${mod.name}.module.js`);
+            files.unshift(`${config.folders.devBuildScripts}app.js`);
+            return files;
+        }, [])
+    );
+};
 
 // Styles
 config.styles = require('./styles');
