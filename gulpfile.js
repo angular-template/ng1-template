@@ -1,5 +1,7 @@
 'use strict';
 
+/*** DO NOT MODIFY THIS FILE ***/
+
 let gulp = require('gulp');
 
 let ng1TemplateGulp = require('ng1-template-gulp');
