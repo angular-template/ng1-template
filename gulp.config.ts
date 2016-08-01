@@ -1,8 +1,10 @@
+/// <reference path="./node_modules/ng1-template-gulp/typings/gulp.config.d.ts"/>
+
 'use strict';
 
-let utils = require('ng1-template-gulp').utils;
+let utils: IUtils = require('ng1-template-gulp').utils;
 
-module.exports = function(config) {
+module.exports = function(config: IConfig) {
     /**
      * Create all application modules and add them to the config.modules array in increasing order
      * of their dependencies to one another.
@@ -13,4 +15,7 @@ module.exports = function(config) {
     config.modules.push(utils.createModule('demo'));
 
     // Add your project-specific configurations by adding to or modifying the config object.
+    config.styles.usesLess = true;
+
+    config.styles.injections.unshift(`${config.folders.bower}bootstrap/dist/css/bootstrap.css`);
 };
