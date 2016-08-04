@@ -16,11 +16,11 @@
     "bower_components"
   ],
   "dependencies": {
-    "angular": "~1.5.7",
-    "angular-animate": "~1.5.7",
-    "angular-aria": "~1.5.7",
-    "angular-messages": "~1.5.7",
-    "angular-sanitize": "~1.5.7",
+    "angular": "~1.5.8",
+    "angular-animate": "~1.5.8",
+    "angular-aria": "~1.5.8",
+    "angular-messages": "~1.5.8",
+    "angular-sanitize": "~1.5.8",
     "angular-ui-router": "~0.3.1",
     "jquery": "~3.1.0",
     "lodash": "^4.13.1",
