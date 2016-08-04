@@ -9,7 +9,8 @@
     "dev": "gulp serve --env=dev",
     "prod": "gulp serve-dist --env=prod",
     "code": "gulp serve --launch=0",
-    "vet": "gulp vet"
+    "vet": "gulp vet",
+    "p": "npm prune && npm i ../ng1-template-gulp/ng1-template-gulp-1.0.8-beta.1.tgz"
   },
   "main": "server/server.js",
   "repository": {
@@ -23,8 +24,7 @@
   },
   "homepage": "https://github.com/angular-template/ng1-template#readme",
   "devDependencies": {
-    "gulp": "^3.9.0",
-    "ng1-template-gulp": "^1.0.6"
+    "gulp": "^3.9.0"
   },
   "dependencies": {
     "compression": "^1.6.0",

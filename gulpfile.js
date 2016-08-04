@@ -34,3 +34,10 @@ gulp.task('load_rev_manifest', done => {
     config.revManifest = require(`${config.folders.distBuild}rev-manifest.json`);
     done();
 });
+
+gulp.task('x', (done) => {
+    let _ = require('lodash');
+    let values = _.values(config.staticFiles.images).map(fn => fn(config.folders.devBuild, config.folders.devBuildStyles));
+    console.log(values);
+    done();
+})
