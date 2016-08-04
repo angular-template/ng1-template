@@ -5,8 +5,6 @@
 let utils: IUtils = require('ng1-template-gulp').utils;
 
 module.exports = function(config: IConfig) {
-    let commonModule: IModule = config.modules[0];
-
     /**
      * The following variables represent aspects of the default configuration.
      * If you are changing any existing values in the default config, update or delete the variables accordingly.
