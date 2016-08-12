@@ -48,11 +48,22 @@ gulp.task('test-build', done => {
     require('run-sequence')(
         tsks.dist.clean,
         tsks.dev.build,
+        'strip_injects',
         'create_env_configs',
         'copy_to_dist',
         'inject_ng_templates',
         'my_optimize_build',
         done);
+});
+
+gulp.task('strip_injects', () => {
+    let stripLine = require('gulp-strip-line');
+    return gulp.src(config.shell.file)
+        .pipe(stripLine(`<!-- inject`))
+        .pipe(stripLine(`<!-- endinject`))
+        .pipe(stripLine(`<!-- bower`))
+        .pipe(stripLine(`<!-- endbower`))
+        .pipe(gulp.dest(config.folders.client));
 });
 
 gulp.task('my_optimize_build', () => {
@@ -66,15 +77,12 @@ gulp.task('my_optimize_build', () => {
     let debug = require('gulp-debug');
     let rev = require('gulp-rev');
     let revReplace = require('gulp-rev-replace');
-    let stripLine = require('gulp-strip-line');
 
     function revoutput(file) {
         return file.path.length > 5 && file.path.substr(file.path.length - '.html'.length).toLowerCase() !== '.html';
     }
 
     return gulp.src(config.shell.file)
-        .pipe(stripLine(`<!-- inject`))
-        .pipe(stripLine(`<!-- endinject`))
         .pipe(useref({searchPath: './'}))
         .pipe(gulpif('*.js', uglify()))
         .pipe(gulpif('*.css', csso()))
