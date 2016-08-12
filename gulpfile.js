@@ -76,7 +76,7 @@ gulp.task('my_optimize_build', () => {
         .pipe(gulpif('*.js', uglify()))
         .pipe(gulpif('*.css', csso()))
         .pipe(debug({title: 'after-useref'}))
-        .pipe(gulpif(revoutput, rev()))
-        .pipe(revReplace())
+        //.pipe(gulpif(revoutput, rev()))
+        //.pipe(revReplace())
         .pipe(gulp.dest(config.folders.distBuild));
 });
