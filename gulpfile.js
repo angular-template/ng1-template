@@ -48,7 +48,6 @@ gulp.task('test-build', done => {
     require('run-sequence')(
         tsks.dist.clean,
         tsks.dev.build,
-        'strip_injects',
         'create_env_configs',
         'copy_to_dist',
         'inject_ng_templates',
