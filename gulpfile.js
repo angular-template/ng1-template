@@ -74,6 +74,7 @@ gulp.task('my_optimize_build', () => {
 
     return gulp.src(config.shell.file)
         .pipe(stripLine(`<!-- inject`))
+        .pipe(stripLine(`<!-- endinject`))
         .pipe(useref({searchPath: './'}))
         .pipe(gulpif('*.js', uglify()))
         .pipe(gulpif('*.css', csso()))
