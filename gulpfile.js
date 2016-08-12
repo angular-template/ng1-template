@@ -41,3 +41,42 @@ gulp.task('build-output', done => {
     console.log(contents);
 });
 
+gulp.task('test-build', done => {
+    utils.log('Building the distribution deployment of the application.');
+
+    let tsks = utils.taskNames;
+    require('run-sequence')(
+        tsks.dist.clean,
+        tsks.dev.build,
+        'create_env_configs',
+        'copy_to_dist',
+        'inject_ng_templates',
+        'my_optimize_build',
+        done);
+});
+
+gulp.task('my_optimize_build', () => {
+    utils.log('[MINE] Performing optimization for dist - bundling, minification and cache busting.');
+
+    // let $ = require('gulp-load-plugins')({lazy: true});
+    let useref = require('gulp-useref');
+    let gulpif = require('gulp-if');
+    let uglify = require('gulp-uglify');
+    let csso = require('gulp-csso');
+    let debug = require('gulp-debug');
+    let rev = require('gulp-rev');
+    let revReplace = require('gulp-rev-replace');
+
+    function revoutput(file) {
+        return file.path.length > 5 && file.path.substr(file.path.length - '.html'.length).toLowerCase() !== '.html';
+    }
+
+    return gulp.src(config.shell.file)
+        .pipe(useref({searchPath: './'}))
+        .pipe(gulpif('*.js', uglify()))
+        .pipe(gulpif('*.css', csso()))
+        .pipe(debug({title: 'after-useref'}))
+        .pipe(gulpif(revoutput, rev()))
+        .pipe(revReplace())
+        .pipe(gulp.dest(config.folders.distBuild));
+});
