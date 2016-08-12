@@ -9,7 +9,7 @@ before_install:
   - npm install -g bower gulp typings #firebase-tools
 
 script:
-  - gulp build-dist
+  - gulp test-build
   - gulp build-output
 
 #after_success:
