@@ -66,12 +66,14 @@ gulp.task('my_optimize_build', () => {
     let debug = require('gulp-debug');
     let rev = require('gulp-rev');
     let revReplace = require('gulp-rev-replace');
+    let stripLine = require('gulp-strip-line');
 
     function revoutput(file) {
         return file.path.length > 5 && file.path.substr(file.path.length - '.html'.length).toLowerCase() !== '.html';
     }
 
     return gulp.src(config.shell.file)
+        .pipe(stripLine(`<!-- inject`))
         .pipe(useref({searchPath: './'}))
         .pipe(gulpif('*.js', uglify()))
         .pipe(gulpif('*.css', csso()))
