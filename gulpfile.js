@@ -35,9 +35,9 @@ gulp.task('load_rev_manifest', done => {
     done();
 });
 
-gulp.task('x', (done) => {
-    let _ = require('lodash');
-    let values = _.values(config.staticFiles.images).map(fn => fn(config.folders.devBuild, config.folders.devBuildStyles));
-    console.log(values);
-    done();
-})
+gulp.task('build-output', done => {
+    let fs = require('fs');
+    let contents = fs.readFileSync('./.build/.dist/index.html', 'utf8');
+    console.log(contents);
+});
+
