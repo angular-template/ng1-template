@@ -10,7 +10,6 @@ before_install:
 
 script:
   - gulp build-dist
-  - gulp build-output
 
 after_success:
 - firebase deploy --token ${FIREBASE_TOKEN}
