@@ -11,10 +11,7 @@ namespace demo.customers {
         selector: name
     }, {
         path: '/demos/customers',
-        parent: demo.layouts.sample.name,
-        resolve: {
-            x: 5
-        }
+        parent: demo.layouts.sample.name
     })
     export class CustomersComponent implements ng.IComponentController {
         /* @ngInject */
