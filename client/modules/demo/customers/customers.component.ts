@@ -11,7 +11,10 @@ namespace demo.customers {
         selector: name
     }, {
         path: '/demos/customers',
-        parent: demo.layouts.sample.name
+        parent: demo.layouts.sample.name,
+        resolve: {
+            x: 5
+        }
     })
     export class CustomersComponent implements ng.IComponentController {
         /* @ngInject */
@@ -19,30 +22,23 @@ namespace demo.customers {
         }
 
         public $onInit(): void {
-            // this.$log.log(this.count, this.test, this.customers);
-            this.$log.log(this.theData);
-            // this.customers = this.customersWebService.getCustomers();
+            this.$log.log(this.theDataVo, this.customers);
         }
 
-        // @resolved
-        // public customers: wsModels.Customer[];
+        @resolver(['customersWebService'])
+        public resolveCustomers(customersWebService: ws.CustomersWebService): wsModels.Customer[] {
+            return customersWebService.getCustomers();
+        }
 
-        // @resolved
-        // public count: number;
-
-        // @resolved
-        // public test: string;
+        @resolved
+        public customers: wsModels.Customer[];
 
         @resolver()
-        public resolveTheData(): string {
+        public resolveTheDataVo(): string {
             return `The data is `;
         }
 
         @resolved
-        public theData: number;
-
-        public callFunc() {
-            this.$log.log(this);
-        }
+        public theDataVo: string;
     }
 }

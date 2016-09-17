@@ -18,10 +18,13 @@ namespace common.config {
                 toParams: { [key: string]: string },
                 fromState: angular.ui.IState,
                 fromParams: { [key: string]: string },
-                error: any
+                error: Object
             ) => {
-                $log.error(event, toState, toParams, fromState, fromParams);
-                $log.error(typeof error, error);
+                $log.error('State change error:', error);
+                $log.error('To state:', toState);
+                $log.error('To params:', toParams);
+                $log.error('From state:', fromState);
+                $log.error('From params:', fromParams);
             });
         }
     );
