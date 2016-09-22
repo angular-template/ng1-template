@@ -7,7 +7,7 @@ namespace common.welcome {
     @Component({
         selector: name
     }, {
-        path: '/welcome',
+        path: '/',
         parent: layouts.main.name
     })
     export class WelcomePage implements ng.IComponentController {
