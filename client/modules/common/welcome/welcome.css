@@ -1,0 +1,10 @@
+.welcome-body {
+    background-color: lightyellow;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+.welcome-body h1 {
+    font-size: larger;
+}
