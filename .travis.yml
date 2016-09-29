@@ -7,8 +7,9 @@ node_js:
 
 #before_install:
 #  - npm install -g bower gulp typings firebase-tools
-before_install:
-  - npm install -g firebase-tools
+
+before_script:
+  - npm install --save-dev firebase-tools
 
 script:
   - npm run build-prod
@@ -21,6 +22,6 @@ notifications:
     - jeevan@jeevanjames.com
   webhooks: https://outlook.office365.com/webhook/6fa8f3c6-c8df-4aee-9ba7-c9bac0e22f1c@c6c1e9da-5d0c-4f8f-9a02-3c67206efbd6/TravisCI/a0bd584055a341229fa183fab269fe23/4e57288a-dffc-43b3-a2e0-1fafb92720c5
 
-cache:
-  directories:
-    - node_modules
+#cache:
+#  directories:
+#    - node_modules

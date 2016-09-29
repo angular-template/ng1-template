@@ -1,2 +1,2 @@
 #!/bin/sh
-gulp vet --fail-on-error=1
+npm run vet --fail-on-error=1

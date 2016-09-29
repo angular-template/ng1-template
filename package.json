@@ -3,14 +3,14 @@
   "version": "1.0.0",
   "description": "AngularJS, Typescript and Gulp template for large applications",
   "scripts": {
-    "postinstall": "node_modules/.bin/bower install && node_modules/.bin/typings install && node_modules/.bin/gulp setup",
-    "start": "node_modules/.bin/gulp serve",
-    "deploy": "node_modules/.bin/gulp build-dist --env=prod && firebase deploy",
-    "dev": "node_modules/.bin/gulp serve --env=dev",
-    "prod": "node_modules/.bin/gulp serve-dist --env=prod",
-    "build-prod": "node_modules/.bin/gulp build-dist --env=prod",
-    "code": "node_modules/.bin/gulp serve --launch=0",
-    "vet": "node_modules/.bin/gulp vet"
+    "postinstall": "typings install && bower install && gulp setup",
+    "start": "gulp serve",
+    "deploy": "gulp build-dist --env=prod && firebase deploy",
+    "dev": "gulp serve --env=dev",
+    "prod": "gulp serve-dist --env=prod",
+    "build-prod": "gulp build-dist --env=prod",
+    "code": "gulp serve --launch=0",
+    "vet": "gulp vet"
   },
   "main": "server/server.js",
   "repository": {
