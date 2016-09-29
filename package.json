@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "AngularJS, Typescript and Gulp template for large applications",
   "scripts": {
-    "postinstall": "typings install && bower install && gulp setup",
+    "postinstall": "bower install && typings install && gulp setup",
     "start": "gulp serve",
     "deploy": "gulp build-dist --env=prod && firebase deploy",
     "dev": "gulp serve --env=dev",
