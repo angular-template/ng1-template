@@ -11,6 +11,5 @@ namespace common.welcome {
         parent: layouts.main.name
     })
     export class WelcomePage implements ng.IComponentController {
-
     }
 }
