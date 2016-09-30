@@ -12,7 +12,7 @@ before_script:
   - npm install --save-dev firebase-tools
 
 script:
-  - npm run build-prod
+  - npm run build-dist
 
 after_success:
 - firebase deploy --token ${FIREBASE_TOKEN}
