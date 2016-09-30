@@ -6,7 +6,7 @@
     "postinstall": "bower install && typings install && gulp setup",
     "start": "gulp serve",
     "build": "gulp build",
-    "build-dist": "gulp build-dist",
+    "build-dist": "gulp build-dist --env=prod",
     "clean": "gulp clean",
     "code": "gulp code",
     "compile": "gulp compile",
@@ -28,7 +28,7 @@
   "devDependencies": {
     "bower": "^1.7.9",
     "gulp": "^3.9.0",
-    "ng1-template-gulp": "^1.2.0-beta.1",
+    "ng1-template-gulp": "^1.2.0-beta.2",
     "typings": "^1.4.0"
   },
   "dependencies": {
