@@ -5,11 +5,13 @@
   "scripts": {
     "postinstall": "bower install && typings install && gulp setup",
     "start": "gulp serve",
-    "deploy": "gulp build-dist --env=prod && firebase deploy",
-    "dev": "gulp serve --env=dev",
-    "prod": "gulp serve-dist --env=prod",
-    "build-prod": "gulp build-dist --env=prod",
-    "code": "gulp serve --launch=0",
+    "build": "gulp build",
+    "build-dist": "gulp build-dist",
+    "clean": "gulp clean",
+    "code": "gulp code",
+    "compile": "gulp compile",
+    "lint": "gulp lint",
+    "serve-dist": "gulp serve-dist",
     "vet": "gulp vet"
   },
   "main": "server/server.js",
@@ -24,8 +26,10 @@
   },
   "homepage": "https://github.com/angular-template/ng1-template#readme",
   "devDependencies": {
+    "bower": "^1.7.9",
     "gulp": "^3.9.0",
-    "ng1-template-gulp": "^1.1.1"
+    "ng1-template-gulp": "^1.2.0-beta.1",
+    "typings": "^1.4.0"
   },
   "dependencies": {
     "compression": "^1.6.0",
