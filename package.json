@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/angular-template/ng1-template#readme",
   "devDependencies": {
+    "@types/node": "^6.0.41",
     "bower": "^1.7.9",
     "gulp": "^3.9.0",
     "ng1-template-gulp": "^1.2.0-beta.2",
