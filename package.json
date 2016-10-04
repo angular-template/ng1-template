@@ -12,7 +12,8 @@
     "compile": "gulp compile",
     "lint": "gulp lint",
     "serve-dist": "gulp serve-dist",
-    "vet": "gulp vet"
+    "vet": "gulp vet",
+    "update": "npm un --save-dev ng1-template-gulp && npm i --save-dev ng1-template-gulp"
   },
   "main": "server/server.js",
   "repository": {
@@ -29,7 +30,7 @@
     "@types/node": "^6.0.41",
     "bower": "^1.7.9",
     "gulp": "^3.9.0",
-    "ng1-template-gulp": "^1.2.0-beta.4",
+    "ng1-template-gulp": "^1.3.0-beta.2",
     "typings": "^1.4.0"
   },
   "dependencies": {

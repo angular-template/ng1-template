@@ -17,7 +17,6 @@ module.exports = function(config: IConfig) {
      * The common module is added by default, so you do not need to add it if it's needed. If it is
      * not needed, you'll need to remove it first.
      */
-    config.modules.push(utils.createModule('demo'));
 
     // Add your project-specific configurations by adding to or modifying the config object.
 };
