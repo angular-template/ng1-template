@@ -4,7 +4,7 @@
 namespace common.welcome {
     export const name: string = 'welcome';
 
-    @Component({
+    @Page({
         selector: name
     }, {
         path: '/',
