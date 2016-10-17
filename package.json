@@ -30,7 +30,7 @@
     "@types/node": "^6.0.41",
     "bower": "^1.7.9",
     "gulp": "^3.9.0",
-    "ng1-template-gulp": "^1.4.0",
+    "ng1-template-gulp": "^1.5.0-beta.3",
     "typings": "^1.4.0"
   },
   "dependencies": {
