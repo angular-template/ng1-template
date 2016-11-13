@@ -13,7 +13,7 @@ typings/
 .build/
 
 # Generated files
-./tslint.json
+tslint.json
 client/index.html
 client/modules/app.ts
 client/modules/**/*.module.ts
@@ -23,4 +23,4 @@ client/modules/**/*.js
 client/modules/**/*.js.map
 
 # Log/debug files from tools like npm
-./*.log
+*.log
