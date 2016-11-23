@@ -13,6 +13,7 @@
     "lint": "gulp lint",
     "serve-dist": "gulp serve-dist",
     "vet": "gulp vet",
+    "swagger": "swagen",
     "update": "npm un --save-dev ng1-template-gulp && npm i --save-dev ng1-template-gulp"
   },
   "main": "server/server.js",
@@ -30,7 +31,9 @@
     "@types/node": "^6.0.41",
     "bower": "^1.8.0",
     "gulp": "^3.9.0",
-    "ng1-template-gulp": "^1.10.0",
+    "ng1-template-gulp": "^1.11.0-beta.2",
+    "swagen": "0.0.10",
+    "swagen-ng1-http": "0.0.4",
     "typings": "^2.0.0"
   },
   "dependencies": {
