@@ -1,1 +1,0 @@
-Use this to generate Typescript client code for RESTful web services from the Swagger.
