@@ -28,12 +28,12 @@
   },
   "homepage": "https://github.com/angular-template/ng1-template#readme",
   "devDependencies": {
-    "@types/node": "^6.0.41",
+    "@types/node": "0.0.1",
     "bower": "^1.8.0",
     "gulp": "^3.9.0",
     "ng1-template-gulp": "^1.11.0-beta.2",
-    "swagen": "0.0.10",
-    "swagen-ng1-http": "0.0.4",
+    "swagen": "0.0.16",
+    "swagen-ng1-http": "0.0.30",
     "typings": "^2.0.0"
   },
   "dependencies": {
