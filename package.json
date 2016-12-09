@@ -4,17 +4,12 @@
   "description": "AngularJS, Typescript and Gulp template for large applications",
   "scripts": {
     "postinstall": "bower install && typings install && gulp setup",
-    "start": "gulp serve",
-    "build": "gulp build",
     "build-dist": "gulp build-dist --env=prod",
     "clean": "gulp clean",
-    "code": "gulp code",
-    "compile": "gulp compile",
-    "lint": "gulp lint",
-    "serve-dist": "gulp serve-dist",
     "vet": "gulp vet",
-    "swagger": "swagen",
-    "update": "npm un --save-dev ng1-template-gulp && npm i --save-dev ng1-template-gulp"
+    "swagger": "gulp swagen:compile_config && swagen && del swagen.config.js",
+    "update-swagger": "npm un --save-dev swagen swagen-ng1-http && npm i --save-dev swagen swagen-ng1-http",
+    "update-gulp": "npm un --save-dev ng1-template-gulp && npm i --save-dev ng1-template-gulp"
   },
   "main": "server/server.js",
   "repository": {
@@ -31,9 +26,9 @@
     "@types/node": "^6.0.41",
     "bower": "^1.8.0",
     "gulp": "^3.9.0",
-    "ng1-template-gulp": "^1.11.0-beta.2",
-    "swagen": "0.0.10",
-    "swagen-ng1-http": "0.0.4",
+    "ng1-template-gulp": "^1.11.0-beta.3",
+    "swagen": "0.0.19",
+    "swagen-ng1-http": "0.0.31",
     "typings": "^2.0.0"
   },
   "dependencies": {

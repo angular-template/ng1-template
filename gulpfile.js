@@ -16,3 +16,7 @@ config.options.bowerJson = require(`${config.folders.root}bower.json`);
 /*** ADD CUSTOM GULP TASKS BELOW ***/
 /* Access the configuration using the config variable. */
 /* Access utility function using the utils variable.   */
+
+gulp.task('swagen:compile_config', done => {
+    utils.compileTsFile('./swagen.config.ts', config.folders.root);
+});

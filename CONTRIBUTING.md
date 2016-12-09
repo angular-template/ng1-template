@@ -1,4 +1,4 @@
-Angular 1 Template welcomes patches/pulls for features and bug fixes.
+Angular 1.x Template welcomes patches/pulls for features and bug fixes.
 
 To contribute your changes, you will need to:
 * [Fork this repository](https://help.github.com/articles/working-with-forks/)

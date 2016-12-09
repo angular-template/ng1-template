@@ -13,6 +13,7 @@ typings/
 .build/
 
 # Generated files
+swagen.config.js
 tslint.json
 client/index.html
 client/modules/app.ts

@@ -13,7 +13,7 @@
 namespace common.webservices {
     import __models = common.webservices.models;
 
-    export interface IpetClient {
+    export interface IPetClient {
         addPet(body: __models.Pet): ng.IPromise<any>;
         updatePet(body: __models.Pet): ng.IPromise<any>;
         findPetsByStatus(status: __models.StatusEnum[]): ng.IPromise<__models.Pet[]>;
@@ -24,7 +24,7 @@ namespace common.webservices {
         uploadFile(petId: number, additionalMetadata: string, file: any): ng.IPromise<__models.ApiResponse>;
     }
 
-    export class petClient implements IpetClient {
+    export class PetClient implements IPetClient {
         private baseUrl: string;
 
         public static $inject: string[] = ['$http', '$q', 'config'];
@@ -225,16 +225,16 @@ namespace common.webservices {
         }
     }
 
-    angular.module('common').service('petClient', petClient);
+    angular.module('common').service('petClient', PetClient);
 
-    export interface IstoreClient {
+    export interface IStoreClient {
         getInventory(): ng.IPromise<any>;
         placeOrder(body: __models.Order): ng.IPromise<__models.Order>;
         getOrderById(orderId: number): ng.IPromise<__models.Order>;
         deleteOrder(orderId: number): ng.IPromise<any>;
     }
 
-    export class storeClient implements IstoreClient {
+    export class StoreClient implements IStoreClient {
         private baseUrl: string;
 
         public static $inject: string[] = ['$http', '$q', 'config'];
@@ -335,9 +335,9 @@ namespace common.webservices {
         }
     }
 
-    angular.module('common').service('storeClient', storeClient);
+    angular.module('common').service('storeClient', StoreClient);
 
-    export interface IuserClient {
+    export interface IUserClient {
         createUser(body: __models.User): ng.IPromise<any>;
         createUsersWithArrayInput(body: __models.User[]): ng.IPromise<any>;
         createUsersWithListInput(body: __models.User[]): ng.IPromise<any>;
@@ -348,7 +348,7 @@ namespace common.webservices {
         deleteUser(username: string): ng.IPromise<any>;
     }
 
-    export class userClient implements IuserClient {
+    export class UserClient implements IUserClient {
         private baseUrl: string;
 
         public static $inject: string[] = ['$http', '$q', 'config'];
@@ -551,7 +551,7 @@ namespace common.webservices {
         }
     }
 
-    angular.module('common').service('userClient', userClient);
+    angular.module('common').service('userClient', UserClient);
 
     function buildServiceUrl(baseUrl: string, resourceUrl: string, queryParams?: {[name: string]: string}): string {
         let url: string = baseUrl;
