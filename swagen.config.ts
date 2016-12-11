@@ -3,11 +3,11 @@
 
 'use strict';
 
-const api: swagen.Profile<swagen.ng1Http.Options> = {
+const api: swagen.Profile<swagen.ng1Http.OriginalOptions> = {
     url: 'http://petstore.swagger.io/v2/swagger.json',
     output: './client/modules/common/webservices/__api.services.ts',
     generator: 'ng1-http',
-    language: 'typescript',
+    language: 'typescript_original',
     debug: {
         definition: './.build/api.definition.json'
     },

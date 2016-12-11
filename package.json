@@ -28,7 +28,7 @@
     "gulp": "^3.9.0",
     "ng1-template-gulp": "^1.11.0-beta.4",
     "swagen": "0.0.19",
-    "swagen-ng1-http": "0.0.31",
+    "swagen-ng1-http": "0.0.42",
     "typings": "^2.0.0"
   },
   "dependencies": {

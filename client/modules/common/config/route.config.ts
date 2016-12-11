@@ -20,6 +20,7 @@ namespace common.config {
                 fromParams: { [key: string]: string },
                 error: Object
             ) => {
+                $log.error('event', event);
                 $log.error('State change error:', error);
                 $log.error('To state:', toState);
                 $log.error('To params:', toParams);
