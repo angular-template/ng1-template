@@ -4,7 +4,7 @@
 namespace common.layouts.main {
     export const name: string = 'main-layout';
 
-    @Layout({name: name})
+    @Layout({name})
     export class MainLayout implements ng.IComponentController {
     }
 }
