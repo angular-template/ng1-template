@@ -1,14 +1,21 @@
 {
     "rules": {
+        "adjacent-overload-signatures": true,
         "align": [
             true,
             "parameters",
             "statements"
         ],
+        "array-type": [
+            true,
+            "array"
+        ],
+        "arrow-parens": true,
         "ban": false,
         "class-name": true,
         "comment-format": false,
         "curly": true,
+        "cyclomatic-complexity": false,
         "eofline": true,
         "forin": true,
         "indent": [
@@ -18,7 +25,10 @@
         "interface-name": false,
         "jsdoc-format": true,
         "label-position": true,
-        "label-undefined": true,
+        "max-classes-per-file": [
+            true,
+            1
+        ],
         "max-line-length": [
             true,
             120
@@ -42,31 +52,37 @@
             "trace"
         ],
         "no-construct": true,
-        "no-constructor-vars": false,
         "no-debugger": true,
-        "no-duplicate-key": true,
         "no-duplicate-variable": true,
         "no-empty": true,
         "no-eval": true,
+        // Requires type info
+        "no-for-in-array": false,
         "no-inferrable-types": false,
         "no-internal-module": true,
         "no-invalid-this": true,
         "no-mergeable-namespace": false,
         "no-namespace": false,
         "no-null-keyword": true,
+        "no-parameter-properties": false,
         "no-reference": false,
         "no-require-imports": true,
         "no-shadowed-variable": true,
         "no-string-literal": false,
         "no-switch-case-fall-through": true,
         "no-trailing-whitespace": true,
-        "no-unreachable": true,
+        "no-unsafe-finally": true,
         "no-unused-expression": true,
         "no-unused-new": true,
-        "no-unused-variable": true,
+        // disable this rule as it is very heavy performance-wise and not that useful
         "no-use-before-declare": false,
         "no-var-keyword": true,
         "no-var-requires": true,
+        "object-literal-key-quotes": [
+            true,
+            "as-needed"
+        ],
+        "object-literal-shorthand": true,
         "object-literal-sort-keys": false,
         "one-line": [
             true,
@@ -80,19 +96,19 @@
             true,
             "ignore-for-loop"
         ],
-        "only-arrow-functions": true,
-        "quotemark": [
-            true,
-            "single"
-        ],
+        "only-arrow-functions": [true, "allow-declarations"],
+        "ordered-imports": [true, {
+            "import-sources-order": "case-insensitive",
+            "named-imports-order": "case-insensitive"
+        }],
+        "prefer-for-of": true,
+        "quotemark": [true, "single"],
         "radix": false,
-        "semicolon": [
-            true,
-            "always"
-        ],
+        // Requires type info
+        "restrict-plus-operands": false,
+        "semicolon": [true, "always"],
         "switch-default": true,
-        "trailing-comma": [
-            true,
+        "trailing-comma": [true,
             {
                 "singleline": "never"
             }
@@ -102,16 +118,7 @@
             "allow-null-check",
             "allow-undefined-check"
         ],
-        "typedef": [
-            false,
-            "call-signature",
-            "arrow-call-signature",
-            "parameter",
-            "arrow-parameter",
-            "property-declaration",
-            "variable-declaration",
-            "member-variable-declaration"
-        ],
+        "typedef": false,
         "typedef-whitespace": [
             true,
             {
@@ -120,22 +127,20 @@
                 "parameter": "nospace",
                 "property-declaration": "nospace",
                 "variable-declaration": "nospace"
-            },
-            {
-                "call-signature": "space",
-                "index-signature": "space",
-                "parameter": "space",
-                "property-declaration": "space",
-                "variable-declaration": "space"
+            }, {
+                "call-signature": "onespace",
+                "index-signature": "onespace",
+                "parameter": "onespace",
+                "property-declaration": "onespace",
+                "variable-declaration": "onespace"
             }
         ],
         "use-isnan": true,
-        "use-strict": false,
         "variable-name": [
             true,
+            "ban-keywords",
             "check-format",
-            "allow-leading-underscore",
-            "ban-keywords"
+            "allow-leading-underscore"
         ],
         "whitespace": [
             true,

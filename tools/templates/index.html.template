@@ -24,6 +24,11 @@
     <!-- endbower -->
     <!-- endbuild -->
 
+    <!-- build:js js/custom.js -->
+    <!-- inject:custom:js -->
+    <!-- endinject -->
+    <!-- endbuild -->
+
     <!-- build:js js/modules.js -->
     <!-- inject:js -->
     <!-- endinject -->
