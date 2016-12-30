@@ -6,11 +6,16 @@
             "parameters",
             "statements"
         ],
+        "array-type": [
+            true,
+            "array"
+        ],
         "arrow-parens": true,
         "ban": false,
         "class-name": true,
         "comment-format": false,
         "curly": true,
+        "cyclomatic-complexity": false,
         "eofline": true,
         "forin": true,
         "indent": [
@@ -20,6 +25,10 @@
         "interface-name": false,
         "jsdoc-format": true,
         "label-position": true,
+        "max-classes-per-file": [
+            true,
+            1
+        ],
         "max-line-length": [
             true,
             120
@@ -55,6 +64,7 @@
         "no-mergeable-namespace": false,
         "no-namespace": false,
         "no-null-keyword": true,
+        "no-parameter-properties": false,
         "no-reference": false,
         "no-require-imports": true,
         "no-shadowed-variable": true,
@@ -91,6 +101,7 @@
             "import-sources-order": "case-insensitive",
             "named-imports-order": "case-insensitive"
         }],
+        "prefer-for-of": true,
         "quotemark": [true, "single"],
         "radix": false,
         // Requires type info
